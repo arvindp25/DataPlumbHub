@@ -1,3 +1,3 @@
-variable "gcp-project-id" {
+variable "gcp_project_id" {
 type = string
 }

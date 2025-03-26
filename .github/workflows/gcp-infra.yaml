@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   terraform:
-    name: 'Terraform'
+    name: 'GCP Infra Deployment'
     runs-on: ubuntu-latest
     environment: production
 
@@ -23,7 +23,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ./pyspark/
+        working-directory: ./pyspark/infra/
 
     steps:
     # Checkout the repository to the GitHub Actions runner

@@ -3,7 +3,7 @@
 name: 'GCP Infra Deployment'
 
 env:
-  Tf_var_gcp-project-id: ${{ vars.GCP_PROJECT_ID }}
+  TfF_VAR_gcp-project-id: ${{ vars.GCP_PROJECT_ID }}
 
 on:
   push:

@@ -23,7 +23,7 @@ jobs:
     defaults:
       run:
         shell: bash
-         working-directory: ./pyspark/
+        working-directory: ./pyspark/
 
     steps:
     # Checkout the repository to the GitHub Actions runner

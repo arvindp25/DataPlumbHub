@@ -9,6 +9,13 @@ terraform {
 
 provider "google" {
   project     = var.gcp_project_id
-  region      = "us-central1" 
+  region      = "asia-south1" 
 }
 
+resource "google_storage_bucket" "static" {
+ name          = "test_bucket_1124"
+ location      = "India"
+ storage_class = "STANDARD"
+
+#  uniform_bucket_level_access = true
+}

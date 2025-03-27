@@ -6,7 +6,7 @@ env:
   GOOGLE_APPLICATION_CREDENTIALS: 'gcp.json' 
   gcp_key: ${{ secrets.GCP_SERVICE_KEY }}
   TF_VAR_gcp_project_id: ${{ vars.GCP_PROJECT_ID }}
-  test: ${{ vars.sec }}
+  TF_VAR_tfstate_bucket: ${{ vars.TFSTATE_BUCKET }}
 
 on:
   push:
@@ -35,9 +35,6 @@ jobs:
   
     - name: Setup GCP
       run: echo '${{ secrets.GCP_SERVICE_KEY }}' > gcp.json
-
-    
-
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform

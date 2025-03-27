@@ -12,10 +12,10 @@ provider "google" {
   region      = "asia-south1" 
 }
 
-resource "google_storage_bucket" "static" {
- name          = "test_bucket_1124"
- location = "asia-south1"
- storage_class = "STANDARD"
+# resource "google_storage_bucket" "static" {
+#  name          = "test_bucket_1124"
+#  location = "asia-south1"
+#  storage_class = "STANDARD"
 
-#  uniform_bucket_level_access = true
-}
+# #  uniform_bucket_level_access = true
+# }

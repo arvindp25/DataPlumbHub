@@ -33,11 +33,16 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
   
-    - name: Setup GCP
-      run: echo "${{ secrets.GCP_SERVICE_KEY }}" > gcp.json
+    # - name: Setup GCP
+    #   run: echo "${{ secrets.GCP_SERVICE_KEY }}" > gcp.json
 
     - name: Setup GCP
       run: echo "${{ vars.sec }}" > gcp.json
+
+    - name: cat
+      run: cat gcp.json
+
+    
 
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token

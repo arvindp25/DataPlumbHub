@@ -14,7 +14,7 @@ provider "google" {
 
 resource "google_storage_bucket" "static" {
  name          = "test_bucket_1124"
- location      = "India"
+ location = "asia-south1"
  storage_class = "STANDARD"
 
 #  uniform_bucket_level_access = true

@@ -7,6 +7,7 @@ env:
   gcp_key: ${{ secrets.GCP_SERVICE_KEY }}
   TF_VAR_gcp_project_id: ${{ vars.GCP_PROJECT_ID }}
   TF_VAR_tfstate_bucket: ${{ vars.TFSTATE_BUCKET }}
+  TF_VAR_commit_hash: ${{ github.sha }}
 
 on:
   push:

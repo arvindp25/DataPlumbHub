@@ -29,7 +29,7 @@ resource "null_resource" "copy_file_code" {
   provisioner "local-exec" {
     command = <<-EOT
       gcloud auth activate-service-account --key-file="gcp.json"
-      gsutil cp ../pyspark/cymbal_investment_dataset/* ${ google_storage_bucket.pyspark_files.name }
+      gsutil cp ../cymbal_investment_dataset/* ${ google_storage_bucket.pyspark_files.name }
     EOT
   }
 

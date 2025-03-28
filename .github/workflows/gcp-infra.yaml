@@ -41,7 +41,7 @@ jobs:
       uses: hashicorp/setup-terraform@v1
 
     - name: Terraform Init
-      run: terraform init -backend-config="bucket=${{ vars.TFSTATE_BUCKET }}"
+      run: terraform init -backend-config="bucket=${{ vars.TFSTATE_BUCKET }}" 
 
     # Checks that all Terraform configuration files adhere to a canonical format
     # - name: Terraform Format

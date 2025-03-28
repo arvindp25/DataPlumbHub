@@ -6,6 +6,9 @@ terraform {
       version = "6.20.0"
     }
   }
+  backend "gcs" {
+    bucket     = "to_be_overridden_by_init_command"
+  }
 }
 
 provider "google" {

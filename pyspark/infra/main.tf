@@ -42,7 +42,7 @@ resource "google_service_account" "dataproc_service_account" {
 
 resource "google_service_account_iam_member" "dataproc-service-account-iam" {
   service_account_id = google_service_account.dataproc_service_account.id
-  role               = "roles/dataproc.editor"
+  role               = "roles/dataproc.worker"
   member             = "serviceAccount:${google_service_account.dataproc_service_account.email}"
 }
 
@@ -53,32 +53,86 @@ resource "google_bigquery_dataset" "data_transformed" {
 }
 
 
+# resource "google_dataproc_batch" "example_batch_pyspark" {
+#   depends_on = [ google_bigquery_dataset.data_transformed, google_service_account.dataproc_service_account ]
+#     batch_id      = "tf-test-batch"
+#     location      = "asia-south1"
+#     runtime_config {
+#       properties    = { "spark.dynamicAllocation.enabled": "false", "spark.executor.instances": "2", "spark.executor.cores": "4" , "spark.driver.cores": "4" }
+#     }
 
-resource "google_dataproc_batch" "example_batch_pyspark" {
-  depends_on = [ google_bigquery_dataset.data_transformed, google_service_account.dataproc_service_account ]
-    batch_id      = "tf-test-batch"
-    location      = "asia-south1"
-    runtime_config {
-      properties    = { "spark.dynamicAllocation.enabled": "false", "spark.executor.instances": "2", "spark.executor.cores": "4" , "spark.driver.cores": "4" }
+#     environment_config {
+#       execution_config {
+#         subnetwork_uri = "default"
+#         service_account = google_service_account.dataproc_service_account.email
+#       }
+#     }
+#     worker_config {
+#     num_workers = 2  # Reduce the number of workers to match the available CPUs
+#   }
+
+#     pyspark_batch {
+#       main_python_file_uri = "gs://dataproc_python_file/main.py"
+#       args                 = ["bigquery-public-data.cymbal_investments.trade_capture_report", "${ google_bigquery_dataset.data_transformed.dataset_id }"]
+#       # jar_file_uris        = ["file:///usr/lib/spark/examples/jars/spark-examples.jar"]
+#       # python_file_uris     = ["gs://dataproc-examples/pyspark/hello-world/hello-world.py"]
+#       # # archive_uris         = [
+#       #   "https://storage.googleapis.com/terraform-batches/animals.txt.tar.gz#unpacked",
+#       #   "https://storage.googleapis.com/terraform-batches/animals.txt.jar",
+#       #   "https://storage.googleapis.com/terraform-batches/animals.txt"
+#       # ]
+#       # file_uris            = ["https://storage.googleapis.com/terraform-batches/people.txt"]
+#     }
+# }
+
+resource "google_dataproc_cluster" "pyspark_dataproc_cluster" {
+  name       = "my-dataproc-cluster"
+  region     = "asia-south1"
+
+  cluster_config {
+    master_config {
+      num_instances = 1
+      machine_type  = "n1-standard-2"
     }
 
-    environment_config {
-      execution_config {
-        subnetwork_uri = "default"
-        service_account = google_service_account.dataproc_service_account.email
-      }
+    worker_config {
+      num_instances = 2
+      machine_type  = "n1-standard-2"
     }
 
-    pyspark_batch {
-      main_python_file_uri = "gs://dataproc_python_file/main.py"
-      args                 = ["bigquery-public-data.cymbal_investments.trade_capture_report", "${ google_bigquery_dataset.data_transformed.dataset_id }"]
-      # jar_file_uris        = ["file:///usr/lib/spark/examples/jars/spark-examples.jar"]
-      # python_file_uris     = ["gs://dataproc-examples/pyspark/hello-world/hello-world.py"]
-      # # archive_uris         = [
-      #   "https://storage.googleapis.com/terraform-batches/animals.txt.tar.gz#unpacked",
-      #   "https://storage.googleapis.com/terraform-batches/animals.txt.jar",
-      #   "https://storage.googleapis.com/terraform-batches/animals.txt"
-      # ]
-      # file_uris            = ["https://storage.googleapis.com/terraform-batches/people.txt"]
+    software_config {
+      image_version = "2.0-deb9"
     }
+  }
+}
+
+# Submit the PySpark job after creating the cluster
+# resource "google_dataproc_job" "my_pyspark_job" {
+#   region     = "us-central1"
+#   # cluster_id = google_dataproc_cluster.my_dataproc_cluster.id
+
+#   job {
+#     pyspark_job {
+#       main_python_file_uri = "gs://<your-bucket-name>/scripts/example_pyspark.py"
+#     }
+#   }
+
+#   depends_on = [google_dataproc_cluster.my_dataproc_cluster]
+# }
+
+resource "google_dataproc_job" "pyspark" {
+  region       = google_dataproc_cluster.pyspark_dataproc_cluster.region
+  depends_on = [ google_dataproc_cluster.pyspark_dataproc_cluster ]
+  force_delete = true
+  placement {
+    cluster_name = google_dataproc_cluster.pyspark_dataproc_cluster.name
+  }
+
+  pyspark_config {
+    main_python_file_uri = "gs://${google_storage_bucket.pyspark_files.name}/main.py"
+    args = ["bigquery-public-data.cymbal_investments.trade_capture_report", "${ google_bigquery_dataset.data_transformed.dataset_id }"]
+    properties = {
+      "spark.logConf" = "true"
+    }
+  }
 }

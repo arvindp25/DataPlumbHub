@@ -29,7 +29,7 @@ resource "null_resource" "copy_file_code" {
   provisioner "local-exec" {
     command = <<-EOT
       gcloud auth activate-service-account --key-file="gcp.json"
-      gsutil -m cp -r ../cymbal_investment_dataset/* gs://${google_storage_bucket.pyspark_files.name }
+      gsutil -m cp -r ../cymbal_investment_dataset/* gs://${google_storage_bucket.pyspark_files.name }/${var.commit_hash}
     EOT
   }
 
@@ -123,7 +123,7 @@ resource "google_dataproc_job" "pyspark" {
   }
 
   pyspark_config {
-    main_python_file_uri = "gs://${google_storage_bucket.pyspark_files.name}/main.py"
+    main_python_file_uri = "gs://${google_storage_bucket.pyspark_files.name}/${var.commit_hash}/main.py"
     args = ["bigquery-public-data.cymbal_investments.trade_capture_report", "${ google_bigquery_dataset.data_transformed.dataset_id }"]
     properties = {
       "spark.logConf" = "true"

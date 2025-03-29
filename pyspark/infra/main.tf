@@ -93,11 +93,17 @@ resource "google_dataproc_cluster" "pyspark_dataproc_cluster" {
     master_config {
       num_instances = 1
       machine_type  = "n1-standard-2"
+      disk_config {
+        boot_disk_size_gb = 10  # Set smaller disk size (default is 500GB)
+      }
     }
 
     worker_config {
       num_instances = 2
       machine_type  = "n1-standard-2"
+      disk_config {
+        boot_disk_size_gb = 10  # Set smaller disk size (default is 500GB)
+      }
     }
 
     software_config {

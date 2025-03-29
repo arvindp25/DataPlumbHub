@@ -112,33 +112,21 @@ resource "google_dataproc_cluster" "pyspark_dataproc_cluster" {
   }
 }
 
-# Submit the PySpark job after creating the cluster
-# resource "google_dataproc_job" "my_pyspark_job" {
-#   region     = "us-central1"
-#   # cluster_id = google_dataproc_cluster.my_dataproc_cluster.id
 
-#   job {
-#     pyspark_job {
-#       main_python_file_uri = "gs://<your-bucket-name>/scripts/example_pyspark.py"
-#     }
-#   }
 
-#   depends_on = [google_dataproc_cluster.my_dataproc_cluster]
-# }
+resource "google_dataproc_job" "pyspark" {
+  region       = google_dataproc_cluster.pyspark_dataproc_cluster.region
+  depends_on = [ google_dataproc_cluster.pyspark_dataproc_cluster ]
+  force_delete = true
+  placement {
+    cluster_name = google_dataproc_cluster.pyspark_dataproc_cluster.name
+  }
 
-# resource "google_dataproc_job" "pyspark" {
-#   region       = google_dataproc_cluster.pyspark_dataproc_cluster.region
-#   depends_on = [ google_dataproc_cluster.pyspark_dataproc_cluster ]
-#   force_delete = true
-#   placement {
-#     cluster_name = google_dataproc_cluster.pyspark_dataproc_cluster.name
-#   }
-
-#   pyspark_config {
-#     main_python_file_uri = "gs://${google_storage_bucket.pyspark_files.name}/main.py"
-#     args = ["bigquery-public-data.cymbal_investments.trade_capture_report", "${ google_bigquery_dataset.data_transformed.dataset_id }"]
-#     properties = {
-#       "spark.logConf" = "true"
-#     }
-#   }
-# }
+  pyspark_config {
+    main_python_file_uri = "gs://${google_storage_bucket.pyspark_files.name}/main.py"
+    args = ["bigquery-public-data.cymbal_investments.trade_capture_report", "${ google_bigquery_dataset.data_transformed.dataset_id }"]
+    properties = {
+      "spark.logConf" = "true"
+    }
+  }
+}

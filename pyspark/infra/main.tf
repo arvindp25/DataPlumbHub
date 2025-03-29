@@ -35,16 +35,16 @@ resource "null_resource" "copy_file_code" {
 
 }
 
-resource "google_service_account" "dataproc_service_account" {
-  account_id   = "dataprocserverless"
-  display_name = "Service Account"
-}
+# resource "google_service_account" "dataproc_service_account" {
+#   account_id   = "dataprocserverless"
+#   display_name = "Service Account"
+# }
 
-resource "google_service_account_iam_member" "dataproc-service-account-iam" {
-  service_account_id = google_service_account.dataproc_service_account.id
-  role               = "roles/dataproc.worker"
-  member             = "serviceAccount:${google_service_account.dataproc_service_account.email}"
-}
+# resource "google_service_account_iam_member" "dataproc-service-account-iam" {
+#   service_account_id = google_service_account.dataproc_service_account.id
+#   role               = "roles/dataproc.worker"
+#   member             = "serviceAccount:${google_service_account.dataproc_service_account.email}"
+# }
 
 resource "google_bigquery_dataset" "data_transformed" {
   dataset_id                  = "data_transformed"
@@ -101,7 +101,7 @@ resource "google_dataproc_cluster" "pyspark_dataproc_cluster" {
     }
 
     software_config {
-      image_version = "2.0-deb9"
+      image_version = "2.1-debian"
     }
   }
 }

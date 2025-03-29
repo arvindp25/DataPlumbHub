@@ -35,6 +35,17 @@ resource "null_resource" "copy_file_code" {
 
 }
 
+resource "google_service_account" "dataproc_service_account" {
+  account_id   = "dataprocserverless"
+  display_name = "Service Account"
+}
+
+resource "google_service_account_iam_member" "dataproc-service-account-iam" {
+  service_account_id = google_service_account.dataproc_service_account.id
+  role               = "roles/dataproc.editorroles/dataproc.editor"
+  member             = "serviceAccount:${google_service_account.dataproc_service_account.email}"
+}
+
 resource "google_bigquery_dataset" "data_transformed" {
   dataset_id                  = "data_transformed"
   location                    = "asia-south1"
@@ -53,6 +64,7 @@ resource "google_dataproc_batch" "example_batch_pyspark" {
     environment_config {
       execution_config {
         subnetwork_uri = "default"
+        service_account = google_service_account.dataproc_service_account.id
       }
     }
 

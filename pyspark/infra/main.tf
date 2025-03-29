@@ -24,10 +24,18 @@ resource "google_storage_bucket" "pyspark_files" {
 #  uniform_bucket_level_access = true
 }
 
+# resource "google_storage_bucket_object" "copy_files_to_gcs" {
+#   name   = "${var.commit_hash}/"
+#   source =  "../cymbal_investment_dataset/"         
+#   bucket = google_storage_bucket.pyspark_files.name
+# }
+
 resource "google_storage_bucket_object" "copy_files_to_gcs" {
-  name   = "${var.commit_hash}/"
-  source =  "../cymbal_investment_dataset/"         
-  bucket = google_storage_bucket.pyspark_files.name
+  for_each = fileset("../cymbal_investment_dataset", "*")  # Change path and pattern as needed
+  
+  bucket =google_storage_bucket.pyspark_files.name
+  name   = "${var.commit_hash}/${each.value}"  # Destination path in the bucket
+  source = "../cymbal_investment_dataset/${each.value}"  # Local file path
 }
 
 # resource "null_resource" "copy_file_code" {

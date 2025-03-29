@@ -6,7 +6,7 @@ import sys
 spark = SparkSession.builder.master('yarn').appName("CymbalInvestmentPortfolio")
 
 # bucket = sys.argv[1]
-spark.conf.set("temporaryGcsBucket", bucket)
+# spark.conf.set("temporaryGcsBucket", bucket)
 
 source_table = sys.argv[1]
 dest_table = sys.argv[2]

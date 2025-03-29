@@ -59,7 +59,7 @@ resource "google_dataproc_batch" "example_batch_pyspark" {
     batch_id      = "tf-test-batch"
     location      = "asia-south1"
     runtime_config {
-      properties    = { "spark.dynamicAllocation.enabled": "false", "spark.executor.instances": "2", "spark.executor.cores": "4" , "spark.driver.cores": "2" }
+      properties    = { "spark.dynamicAllocation.enabled": "false", "spark.executor.instances": "2", "spark.executor.cores": "4" , "spark.driver.cores": "4" }
     }
 
     environment_config {

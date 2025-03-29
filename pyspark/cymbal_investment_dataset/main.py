@@ -16,7 +16,8 @@ try:
 except Py4JJavaError as e:
     print(f"Table {source_table} not found.")
     raise
+print((table_df.count(), len(table_df.columns)))
 
 agg_df = table_df.groupBy(["symbol", "tradedate"]).agg({"StrikePrice": "avg", "Quantity": "count"})
 
-agg_df.write.format('bigquery').option('table', dest_table).model("overwrite").save()
+agg_df.write.format('bigquery').option('table', dest_table).mode("overwrite").save()

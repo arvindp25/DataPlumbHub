@@ -55,6 +55,7 @@ resource "google_bigquery_dataset" "data_transformed" {
 
 
 resource "google_dataproc_batch" "example_batch_pyspark" {
+  depends_on = [ google_bigquery_dataset.data_transformed, google_service_account.dataproc_service_account ]
     batch_id      = "tf-test-batch"
     location      = "asia-south1"
     runtime_config {
@@ -64,7 +65,7 @@ resource "google_dataproc_batch" "example_batch_pyspark" {
     environment_config {
       execution_config {
         subnetwork_uri = "default"
-        service_account = google_service_account.dataproc_service_account.id
+        service_account = google_service_account.dataproc_service_account.email
       }
     }
 

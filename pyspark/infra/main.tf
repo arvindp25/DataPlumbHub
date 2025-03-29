@@ -94,7 +94,7 @@ resource "google_dataproc_cluster" "pyspark_dataproc_cluster" {
       num_instances = 1
       machine_type  = "n1-standard-2"
       disk_config {
-        boot_disk_size_gb = 10  # Set smaller disk size (default is 500GB)
+        boot_disk_size_gb = 30  # Set smaller disk size (default is 500GB)
       }
     }
 
@@ -102,7 +102,7 @@ resource "google_dataproc_cluster" "pyspark_dataproc_cluster" {
       num_instances = 2
       machine_type  = "n1-standard-2"
       disk_config {
-        boot_disk_size_gb = 10  # Set smaller disk size (default is 500GB)
+        boot_disk_size_gb = 30  # Set smaller disk size (default is 500GB)
       }
     }
 

@@ -107,7 +107,7 @@ resource "google_dataproc_cluster" "pyspark_dataproc_cluster" {
     }
 
     software_config {
-      image_version = "2.1-debian"
+      image_version = "2.1.84-debian11"
     }
   }
 }
@@ -126,19 +126,19 @@ resource "google_dataproc_cluster" "pyspark_dataproc_cluster" {
 #   depends_on = [google_dataproc_cluster.my_dataproc_cluster]
 # }
 
-resource "google_dataproc_job" "pyspark" {
-  region       = google_dataproc_cluster.pyspark_dataproc_cluster.region
-  depends_on = [ google_dataproc_cluster.pyspark_dataproc_cluster ]
-  force_delete = true
-  placement {
-    cluster_name = google_dataproc_cluster.pyspark_dataproc_cluster.name
-  }
+# resource "google_dataproc_job" "pyspark" {
+#   region       = google_dataproc_cluster.pyspark_dataproc_cluster.region
+#   depends_on = [ google_dataproc_cluster.pyspark_dataproc_cluster ]
+#   force_delete = true
+#   placement {
+#     cluster_name = google_dataproc_cluster.pyspark_dataproc_cluster.name
+#   }
 
-  pyspark_config {
-    main_python_file_uri = "gs://${google_storage_bucket.pyspark_files.name}/main.py"
-    args = ["bigquery-public-data.cymbal_investments.trade_capture_report", "${ google_bigquery_dataset.data_transformed.dataset_id }"]
-    properties = {
-      "spark.logConf" = "true"
-    }
-  }
-}
+#   pyspark_config {
+#     main_python_file_uri = "gs://${google_storage_bucket.pyspark_files.name}/main.py"
+#     args = ["bigquery-public-data.cymbal_investments.trade_capture_report", "${ google_bigquery_dataset.data_transformed.dataset_id }"]
+#     properties = {
+#       "spark.logConf" = "true"
+#     }
+#   }
+# }

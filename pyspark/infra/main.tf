@@ -34,3 +34,38 @@ resource "null_resource" "copy_file_code" {
   }
 
 }
+
+resource "google_bigquery_dataset" "data_transformed" {
+  dataset_id                  = "data_transformed"
+  location                    = "asia-south1"
+
+}
+
+
+
+resource "google_dataproc_batch" "example_batch_pyspark" {
+    batch_id      = "tf-test-batch"
+    location      = "asia-south1"
+    runtime_config {
+      properties    = { "spark.dynamicAllocation.enabled": "false", "spark.executor.instances": "2" }
+    }
+
+    environment_config {
+      execution_config {
+        subnetwork_uri = "default"
+      }
+    }
+
+    pyspark_batch {
+      main_python_file_uri = "gs://dataproc_python_file/main.py"
+      args                 = ["bigquery-public-data.cymbal_investments.trade_capture_report", "${ google_bigquery_dataset.data_transformed.dataset_id }"]
+      # jar_file_uris        = ["file:///usr/lib/spark/examples/jars/spark-examples.jar"]
+      # python_file_uris     = ["gs://dataproc-examples/pyspark/hello-world/hello-world.py"]
+      # # archive_uris         = [
+      #   "https://storage.googleapis.com/terraform-batches/animals.txt.tar.gz#unpacked",
+      #   "https://storage.googleapis.com/terraform-batches/animals.txt.jar",
+      #   "https://storage.googleapis.com/terraform-batches/animals.txt"
+      # ]
+      # file_uris            = ["https://storage.googleapis.com/terraform-batches/people.txt"]
+    }
+}

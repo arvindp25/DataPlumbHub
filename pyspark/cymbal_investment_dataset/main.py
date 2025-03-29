@@ -1,14 +1,15 @@
 from pyspark.sql import SparkSession
 import os
 from py4j.protocol import Py4JJavaError
+import sys
 
 spark = SparkSession.builder.master('yarn').appName("CymbalInvestmentPortfolio")
 
-bucket = os.getenv("STAGING_BUCKET")
+# bucket = sys.argv[1]
 spark.conf.set("temporaryGcsBucket", bucket)
 
-source_table = os.getenv("BQ_SOURCE_TABLE")
-dest_table = os.getenv("BQ_DEST_TABLE")
+source_table = sys.argv[1]
+dest_table = sys.argv[2]
 
 try:
     table_df = spark.read.format('bigquery').option('table', source_table).option('inferSchema', "true")

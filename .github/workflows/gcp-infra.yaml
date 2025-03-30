@@ -13,6 +13,12 @@ on:
   push:
     branches: [ "main" ]
   pull_request:
+  workflow_dispatch:
+    inputs:
+      is_destroy:
+        description: "Destroy resources?"
+        required: false
+        default: "false"  # Defaulting to "false" for safety
 
 permissions:
   contents: read
@@ -49,8 +55,14 @@ jobs:
     #   run: terraform fmt -check
 
     - name: Terraform Plan
+      if: ${{ github.event.inputs.is_destroy != 'true' }}
       run: terraform plan -input=false
 
     - name: Terraform Apply
-      if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' }}
+
+      if: ${{ github.ref == 'refs/heads/main' && github.event_name == 'push' && github.event.inputs.is_destroy != 'true' }}
       run: terraform apply -auto-approve -input=false
+
+    - name: Destroy Terraform Resources
+        if: ${{ github.event.inputs.is_destroy == 'true' }}
+        run: terraform destroy -auto-approve

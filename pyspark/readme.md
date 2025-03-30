@@ -10,4 +10,14 @@ BigQuery: Data storage and querying
 
 Terraform: Resource management and infrastructure provisioning
 
-Data Processing Workflow
+
+Workflow
+
+1. Connect to bigquery for source data.
+2. Transform data into below format
+
+![alt text](<Screenshot 2025-03-30 at 23-13-50 Repository – BigQuery – arvind-dev – Google Cloud console.png>)
+
+and make basic dashboard over it.
+looker dashboard:-
+![alt text](portfolio.png)

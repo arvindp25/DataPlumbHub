@@ -35,7 +35,7 @@ def transform_df(df):
     for old_name, new_name in new_column_names.items():
         df = df.withColumnRenamed(old_name, new_name)
 
-    df = df.withColumn("previous_avg_price",f.lag("avg_strikeprice", 1).over(window))
+    df = df.withColumn("previous_avg_price",f.lag("avg_strikeprice", 2).over(window))
     df =  df.withColumn("price_change",\
                        f.when(\
                            f.col("previous_avg_price").isNotNull(), f.col("avg_strikeprice") - f.col("previous_avg_price")

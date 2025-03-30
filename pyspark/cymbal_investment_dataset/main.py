@@ -9,7 +9,7 @@ spark = SparkSession.builder.master('yarn').appName("CymbalInvestmentPortfolio")
 # spark.conf.set("temporaryGcsBucket", bucket)
 
 source_table = sys.argv[1]
-dest_table = sys.argv[2]
+dest_table = f"{sys.argv[2]}.cymbal-investment-portfolio"
 
 try:
     table_df = spark.read.format('bigquery').option('table', source_table).option('inferSchema', "true").load()

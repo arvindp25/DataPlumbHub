@@ -18,7 +18,7 @@ on:
       is_destroy:
         description: "Destroy resources?"
         required: false
-        default: "false"  # Defaulting to "false" for safety
+        default: "true"  # Defaulting to "false" for safety
 
 permissions:
   contents: read
@@ -64,5 +64,5 @@ jobs:
       run: terraform apply -auto-approve -input=false
 
     - name: Destroy Terraform Resources
-        if: ${{ github.event.inputs.is_destroy == 'true' }}
-        run: terraform destroy -auto-approve
+      if: ${{ github.event.inputs.is_destroy == 'true' }}
+      run: terraform destroy -auto-approve

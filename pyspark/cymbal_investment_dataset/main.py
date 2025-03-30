@@ -66,6 +66,9 @@ def main():
 
     dump_df_to_bq(df, dest_table)
 
+if __name__ == "__main__":
+    main()
+
 
         
 

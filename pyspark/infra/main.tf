@@ -100,32 +100,32 @@ resource "google_bigquery_dataset" "data_transformed" {
 #     }
 # }
 
-# resource "google_dataproc_cluster" "pyspark_dataproc_cluster" {
-#   name       = "my-dataproc-cluster"
-#   region     = "asia-south1"
+resource "google_dataproc_cluster" "pyspark_dataproc_cluster" {
+  name       = "my-dataproc-cluster"
+  region     = "asia-south1"
 
-#   cluster_config {
-#     master_config {
-#       num_instances = 1
-#       machine_type  = "n1-standard-2"
-#       disk_config {
-#         boot_disk_size_gb = 30  # Set smaller disk size (default is 500GB)
-#       }
-#     }
+  cluster_config {
+    master_config {
+      num_instances = 1
+      machine_type  = "n1-standard-2"
+      disk_config {
+        boot_disk_size_gb = 30  # Set smaller disk size (default is 500GB)
+      }
+    }
 
-#     worker_config {
-#       num_instances = 2
-#       machine_type  = "n1-standard-2"
-#       disk_config {
-#         boot_disk_size_gb = 30  # Set smaller disk size (default is 500GB)
-#       }
-#     }
+    worker_config {
+      num_instances = 2
+      machine_type  = "n1-standard-2"
+      disk_config {
+        boot_disk_size_gb = 30  # Set smaller disk size (default is 500GB)
+      }
+    }
 
-#     software_config {
-#       image_version = "2.1.84-debian11"
-#     }
-#   }
-# }
+    software_config {
+      image_version = "2.1.84-debian11"
+    }
+  }
+}
 
 
 

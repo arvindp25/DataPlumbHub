@@ -27,9 +27,10 @@ def load_source_table (spark, source_table):
     return table_df
 
 def transform_df(df):
-    window  = Window.partitionBy("avg_strikeprice").orderBy("tradedate")
+    window  = Window.partitionBy("symbol").orderBy("tradedate")
 
-    df = df.groupBy(["symbol", "tradedate"]).agg({"StrikePrice": "avg", "Quantity": "count"}).withColumnRenamed("SUM(money)", "money")
+    df = df.groupBy(["symbol", "tradedate"]).agg(f.avg("StrikePrice").alias("avg_strikeprice"),  
+        f.count("Quantity").alias("count_quantity") )
 
     new_column_names = {col: clean_column_name(col) for col in df.columns}
     for old_name, new_name in new_column_names.items():

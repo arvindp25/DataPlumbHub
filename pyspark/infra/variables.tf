@@ -16,3 +16,8 @@ variable "location" {
     type = string
   
 }
+
+variable "API_KEY" {
+    type = string
+  
+}

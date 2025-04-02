@@ -44,10 +44,26 @@ resource "google_cloud_run_v2_service" "mock-data-generator" {
 
       env {
         name = "API_KEY"
-        value = "abc123" # for testing
+        value = var.API_KEY
       }
     }
   }
 
   depends_on = [null_resource.copy_image_to_artifcat_registory]
+}
+
+
+resource "google_cloud_run_v2_service_iam_policy" "noauth" {
+    name = "mock-data"
+  location = google_cloud_run_v2_service.default.location
+  project  = google_cloud_run_v2_service.default.project
+
+  policy_data = jsonencode({
+    bindings = [
+      {
+        role    = "roles/run.invoker"
+        members = ["allUsers"]
+      }
+    ]
+  })
 }

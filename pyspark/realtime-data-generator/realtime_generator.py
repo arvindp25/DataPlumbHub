@@ -7,12 +7,8 @@ import random
 from datetime import datetime, timezone
 import os
 app = FastAPI()
-API_KEY = os.getenv("APIKEY")
+API_KEY = os.getenv("API_KEY")
 
-# Function to authenticate API key
-def authenticate_api_key(api_key: str):
-    if api_key != API_KEY:
-        raise HTTPException(status_code=401, detail="Unauthorized: Invalid API key")
 
 def generate_complex_iot_data():
     return {

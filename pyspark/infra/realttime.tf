@@ -54,7 +54,7 @@ resource "google_cloud_run_v2_service" "mock-data-generator" {
 
 
 resource "google_cloud_run_v2_service_iam_policy" "noauth" {
-    name = "mock-data-permission"
+    name =  google_cloud_run_v2_service.mock-data-generator.name
   location = google_cloud_run_v2_service.mock-data-generator.location
   project  = google_cloud_run_v2_service.mock-data-generator.project
 

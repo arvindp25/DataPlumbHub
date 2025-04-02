@@ -9,5 +9,5 @@ docker build . -t realtime-data-gen:dev
 ```
 
 ```
-docker run -p 8080:8080 realtime-data-gen:dev
+docker run -e API_KEY=abc123 -p 8080:8080 realtime-data-gen:dev
 ```

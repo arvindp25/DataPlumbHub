@@ -69,13 +69,18 @@ def generate_complex_iot_data():
     }
 
 @app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket, api_key: str = None):
-    if api_key is None:
-        raise HTTPException(status_code=400, detail="API key missing")
-
-    # Authenticate the API key
-    authenticate_api_key(api_key)
+async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
-    while True:
-        data = generate_complex_iot_data()
-        await websocket.send_json(data)
+    
+    # Wait for authentication message
+    auth_message = await websocket.receive_json()
+    if auth_message.get("api_key") != API_KEY:
+        await websocket.close(code=1008)
+        return
+
+    try:
+        while True:
+            data = generate_complex_iot_data()
+            await websocket.send_json(data)
+    except WebSocketDisconnect:
+        print("Client disconnected")

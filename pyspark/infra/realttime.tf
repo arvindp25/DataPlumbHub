@@ -19,7 +19,7 @@ resource "null_resource" "copy_image_to_artifcat_registory" {
   provisioner "local-exec" {
     command = <<EOT
     gcloud auth activate-service-account --key-file="gcp.json"
-    docker build ./realtime-data-generator -t realtime-gen:{var.commit_hash} 
+    docker build ./realtime-data-generator -t realtime-gen:${var.commit_hash} 
     docker tag realtime-gen:${var.commit_hash} ${google_artifact_registry_repository.docker_images.location}-docker.pkg.dev/${var.gcp_project_id}/${google_artifact_registry_repository.docker_images.repository_id}/realtime-gen:${var.commit_hash}
     docker push ${google_artifact_registry_repository.docker_images.location}-docker.pkg.dev/${var.gcp_project_id}/${google_artifact_registry_repository.docker_images.repository_id}/realtime-gen:${var.commit_hash}
     EOT

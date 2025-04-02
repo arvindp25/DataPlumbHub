@@ -1,20 +1,20 @@
-# terraform {
+terraform {
 
-#   required_providers {
-#     google = {
-#       source = "hashicorp/google"
-#       version = "6.20.0"
-#     }
-#   }
-#   backend "gcs" {
-#     bucket     = "to_be_overridden_by_init_command"
-#   }
-# }
+  required_providers {
+    google = {
+      source = "hashicorp/google"
+      version = "6.20.0"
+    }
+  }
+  backend "gcs" {
+    bucket     = "to_be_overridden_by_init_command"
+  }
+}
 
-# provider "google" {
-#   project     = var.gcp_project_id
-#   region      = "asia-south1" 
-# }
+provider "google" {
+  project     = var.gcp_project_id
+  region      = "asia-south1" 
+}
 
 # resource "google_storage_bucket" "pyspark_files" {
 #  name          = "dataproc_python_file"

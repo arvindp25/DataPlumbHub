@@ -85,13 +85,13 @@ async def websocket_endpoint(websocket: WebSocket):
 
     try:
         while True:
-            order_key = str(uuid.uuid4())
+            ordering_key = str(uuid.uuid4())
             data = generate_complex_iot_data()
-            message = (data,order_key)
-            data = json.dumps(message[0]).encode("utf-8")
-            ordering_key = message[1]
+
+            message = json.dumps(data).encode("utf-8")
+
             # When you publish a message, the client returns a future.
-            future = publisher.publish(topic_path, data=data, ordering_key=ordering_key)
+            future = publisher.publish(topic_path, data=message, ordering_key=ordering_key)
             await websocket.send_json(data)
     except WebSocketDisconnect:
         print("Client disconnected")

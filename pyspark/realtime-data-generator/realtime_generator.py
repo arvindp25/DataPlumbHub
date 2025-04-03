@@ -91,7 +91,12 @@ async def websocket_endpoint(websocket: WebSocket):
             message = json.dumps(data).encode("utf-8")
 
             # When you publish a message, the client returns a future.
-            future = publisher.publish(topic_path, data=message, ordering_key=ordering_key)
+            try:
+                future = publisher.publish(topic_path, data=message, ordering_key=ordering_key)
+                message_id = future.result()  # Blocks until message is published
+                print(f"Message published successfully: {message_id}")
+            except Exception as e:
+                print(f"Failed to publish message: {e}")
             await websocket.send_json(data)
     except WebSocketDisconnect:
         print("Client disconnected")

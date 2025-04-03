@@ -1,14 +1,20 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, HTTPException
 from fastapi.security import HTTPBasicCredentials
+from google.cloud import pubsub_v1
 import secrets
 from fastapi import FastAPI, WebSocket
 import json
 import random
 from datetime import datetime, timezone
 import os
+import uuid
 app = FastAPI()
 API_KEY = os.getenv("API_KEY")
-
+project_id = os.getenv("GCP_PROJECT_ID")
+topic_id = os.getenv("PUB_SUB_TOPIC")
+publisher = pubsub_v1.PublisherClient(
+)
+topic_path = publisher.topic_path(project_id, topic_id)
 
 def generate_complex_iot_data():
     return {
@@ -76,7 +82,13 @@ async def websocket_endpoint(websocket: WebSocket):
 
     try:
         while True:
+            order_key = uuid.uuid4()
             data = generate_complex_iot_data()
+            message = (data,order_key)
+            data = message[0].encode("utf-8")
+            ordering_key = message[1]
+            # When you publish a message, the client returns a future.
+            future = publisher.publish(topic_path, data=data, ordering_key=ordering_key)
             await websocket.send_json(data)
     except WebSocketDisconnect:
         print("Client disconnected")

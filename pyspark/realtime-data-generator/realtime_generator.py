@@ -85,7 +85,7 @@ async def websocket_endpoint(websocket: WebSocket):
             order_key = uuid.uuid4()
             data = generate_complex_iot_data()
             message = (data,order_key)
-            data = message[0].encode("utf-8")
+            data = json.dumps(message[0]).encode("utf-8")
             ordering_key = message[1]
             # When you publish a message, the client returns a future.
             future = publisher.publish(topic_path, data=data, ordering_key=ordering_key)

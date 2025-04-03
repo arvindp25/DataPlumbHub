@@ -85,7 +85,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
     try:
         while True:
-            order_key = uuid.uuid4()
+            order_key = str(uuid.uuid4())
             data = generate_complex_iot_data()
             message = (data,order_key)
             data = json.dumps(message[0]).encode("utf-8")

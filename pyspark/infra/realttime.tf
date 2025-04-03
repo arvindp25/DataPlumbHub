@@ -79,7 +79,7 @@ resource "google_cloud_run_v2_service_iam_policy" "noauth" {
 
 resource "google_pubsub_topic" "iot_sensor_data" {
   name = "iot-sensor-topic"
-   enable_message_ordering = true
+
 }
 
 resource "google_pubsub_subscription" "iot-sensor-subscription" {

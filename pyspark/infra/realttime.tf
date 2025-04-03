@@ -67,3 +67,28 @@ resource "google_cloud_run_v2_service_iam_policy" "noauth" {
     ]
   })
 }
+
+resource "google_pubsub_topic" "iot_sensor_data" {
+  name = "iot-sensor-topic"
+}
+
+resource "google_pubsub_subscription" "iot-sensor-subscription" {
+  name  = "iot-sensor-subscription"
+  topic = google_pubsub_topic.iot_sensor_data.id
+
+
+  # 20 minutes
+  message_retention_duration = "1200s"
+  retain_acked_messages      = false
+
+  ack_deadline_seconds = 20
+
+  expiration_policy {
+    ttl = "300000.5s"
+  }
+  retry_policy {
+    minimum_backoff = "10s"
+  }
+
+  enable_message_ordering    = false
+}

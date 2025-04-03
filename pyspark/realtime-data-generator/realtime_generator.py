@@ -13,8 +13,11 @@ API_KEY = os.getenv("API_KEY")
 project_id = os.getenv("GCP_PROJECT_ID")
 topic_id = os.getenv("PUB_SUB_TOPIC")
 publisher = pubsub_v1.PublisherClient(
+        publisher_options = pubsub_v1.types.PublisherOptions(
+        enable_message_ordering=True,
+    )
 )
-topic_path = publisher.topic_path(project_id, topic_id, enable_message_ordering=True)
+topic_path = publisher.topic_path(project_id, topic_id)
 
 def generate_complex_iot_data():
     return {

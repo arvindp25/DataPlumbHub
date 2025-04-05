@@ -123,6 +123,7 @@ resource "google_pubsub_subscription" "bigquery_subscription" {
 
   bigquery_config {
     table = "${google_bigquery_table.iot_sensor_data.project}.${google_bigquery_table.iot_sensor_data.dataset_id}.${google_bigquery_table.iot_sensor_data.table_id}"
+    use_topic_schema = true
   }
 
   # depends_on = [google_project_iam_member.viewer, google_project_iam_member.editor]

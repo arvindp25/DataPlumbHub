@@ -1,0 +1,62 @@
+[
+    { "name": "device_id", "type": "STRING", "mode": "REQUIRED" },
+    { "name": "device_type", "type": "STRING", "mode": "REQUIRED" },
+    { "name": "timestamp", "type": "TIMESTAMP", "mode": "REQUIRED" },
+    {
+      "name": "location", "type": "RECORD", "mode": "REQUIRED", "fields": [
+        { "name": "latitude", "type": "FLOAT", "mode": "REQUIRED" },
+        { "name": "longitude", "type": "FLOAT", "mode": "REQUIRED" },
+        { "name": "factory_section", "type": "STRING", "mode": "REQUIRED" }
+      ]
+    },
+    {
+      "name": "sensors", "type": "RECORD", "mode": "REQUIRED", "fields": [
+        {
+          "name": "temperature", "type": "RECORD", "mode": "REQUIRED", "fields": [
+            { "name": "value", "type": "FLOAT", "mode": "REQUIRED" },
+            { "name": "unit", "type": "STRING", "mode": "REQUIRED" },
+            { "name": "status", "type": "STRING", "mode": "REQUIRED" }
+          ]
+        },
+        {
+          "name": "vibration", "type": "RECORD", "mode": "REQUIRED", "fields": [
+            { "name": "value", "type": "FLOAT", "mode": "REQUIRED" },
+            { "name": "unit", "type": "STRING", "mode": "REQUIRED" },
+            { "name": "status", "type": "STRING", "mode": "REQUIRED" }
+          ]
+        },
+        {
+          "name": "energy_consumption", "type": "RECORD", "mode": "REQUIRED", "fields": [
+            { "name": "value", "type": "FLOAT", "mode": "REQUIRED" },
+            { "name": "unit", "type": "STRING", "mode": "REQUIRED" },
+            { "name": "status", "type": "STRING", "mode": "REQUIRED" }
+          ]
+        },
+        {
+          "name": "pressure", "type": "RECORD", "mode": "REQUIRED", "fields": [
+            { "name": "value", "type": "FLOAT", "mode": "REQUIRED" },
+            { "name": "unit", "type": "STRING", "mode": "REQUIRED" },
+            { "name": "status", "type": "STRING", "mode": "REQUIRED" }
+          ]
+        }
+      ]
+    },
+    { "name": "alerts", "type": "STRING", "mode": "REPEATED" },
+    { "name": "status", "type": "STRING", "mode": "REQUIRED" },
+    { "name": "battery_level", "type": "INTEGER", "mode": "REQUIRED" },
+    {
+      "name": "network", "type": "RECORD", "mode": "REQUIRED", "fields": [
+        { "name": "signal_strength", "type": "INTEGER", "mode": "REQUIRED" },
+        { "name": "connection_type", "type": "STRING", "mode": "REQUIRED" }
+      ]
+    },
+    {
+      "name": "metadata", "type": "RECORD", "mode": "REQUIRED", "fields": [
+        { "name": "firmware_version", "type": "STRING", "mode": "REQUIRED" },
+        { "name": "last_maintenance", "type": "TIMESTAMP", "mode": "REQUIRED" },
+        { "name": "operating_hours", "type": "INTEGER", "mode": "REQUIRED" },
+        { "name": "warranty_valid", "type": "BOOLEAN", "mode": "REQUIRED" }
+      ]
+    }
+  ]
+  

@@ -16,37 +16,7 @@ provider "google" {
   region      = "asia-south1" 
 }
 
-# resource "google_storage_bucket" "pyspark_files" {
-#  name          = "dataproc_python_file"
-#  location = "asia-south1"
-#  storage_class = "STANDARD"
-#  force_destroy = true
 
-# #  uniform_bucket_level_access = true
-# }
-
-# resource "google_storage_bucket" "pyspark_staging_bucket" {
-#  name          = "pyspark_staging_bucket"
-#  location = "asia-south1"
-#  storage_class = "STANDARD"
-#  force_destroy = true
-
-# #  uniform_bucket_level_access = true
-# }
-
-# # resource "google_storage_bucket_object" "copy_files_to_gcs" {
-# #   name   = "${var.commit_hash}/"
-# #   source =  "../cymbal_investment_dataset/"         
-# #   bucket = google_storage_bucket.pyspark_files.name
-# # }
-
-# resource "google_storage_bucket_object" "copy_files_to_gcs" {
-#   for_each = fileset("../cymbal_investment_dataset", "*")  # Change path and pattern as needed
-  
-#   bucket =google_storage_bucket.pyspark_files.name
-#   name   = "${var.commit_hash}/${each.value}"  # Destination path in the bucket
-#   source = "../cymbal_investment_dataset/${each.value}"  # Local file path
-# }
 
 # # resource "null_resource" "copy_file_code" {
 # #   triggers = { always_run = var.commit_hash }
@@ -70,11 +40,7 @@ provider "google" {
 # #   member             = "serviceAccount:${google_service_account.dataproc_service_account.email}"
 # # }
 
-# resource "google_bigquery_dataset" "data_transformed" {
-#   dataset_id                  = "data_transformed"
-#   location                    = "asia-south1"
 
-# }
 
 
 # # resource "google_dataproc_batch" "example_batch_pyspark" {
@@ -155,3 +121,6 @@ provider "google" {
 #     }
 #   }
 # }
+
+data "google_project" "project" {
+}

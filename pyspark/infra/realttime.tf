@@ -52,7 +52,7 @@ resource "google_cloud_run_v2_service" "mock-data-generator" {
       }
         env {
         name = "PUB_SUB_TOPIC"
-        value = google_pubsub_topic.iot_sensor_data.id
+        value = google_pubsub_topic.iot_sensor_data.name
       }
 
     }

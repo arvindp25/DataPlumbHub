@@ -91,7 +91,7 @@ resource "google_pubsub_topic" "iot_sensor_data" {
   name = "iot-sensor-topic"
   schema_settings {
     schema     = google_pubsub_schema.iot_sensor_data_schema.id
-    encoding   = "AVRO"
+    encoding   = "JSON"
   }
 
 }

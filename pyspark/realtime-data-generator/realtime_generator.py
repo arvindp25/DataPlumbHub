@@ -99,7 +99,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 print(f"Message published successfully: {message_id}")
             except Exception as e:
                 print(f"Failed to publish message: {e}")
-            time.sleep(5)
+            time.sleep(0.5)
             await websocket.send_json(data)
     except WebSocketDisconnect:
         print("Client disconnected")

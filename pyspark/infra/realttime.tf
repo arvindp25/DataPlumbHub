@@ -79,20 +79,20 @@ resource "google_cloud_run_v2_service_iam_policy" "noauth" {
 
 
 
-# resource "google_pubsub_schema" "iot_sensor_data_schema" {
-#   name = "iot_sensor_data_schema"
-#   type = "AVRO"
-#   definition = file("./iot_sensor_data_ps.avsc")
+resource "google_pubsub_schema" "iot_sensor_data_schema" {
+  name = "iot_sensor_data_schema"
+  type = "AVRO"
+  definition = file("./iot_sensor_data_ps.avsc")
 
-# }
+}
 
 resource "google_pubsub_topic" "iot_sensor_data" {
 
   name = "iot-sensor-topic"
-  # schema_settings {
-  #   schema     = google_pubsub_schema.iot_sensor_data_schema.id
-  #   encoding   = "AVRO"
-  # }
+  schema_settings {
+    schema     = google_pubsub_schema.iot_sensor_data_schema.id
+    encoding   = "AVRO"
+  }
 
 }
 

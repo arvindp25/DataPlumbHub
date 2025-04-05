@@ -100,3 +100,5 @@ async def websocket_endpoint(websocket: WebSocket):
             await websocket.send_json(data)
     except WebSocketDisconnect:
         print("Client disconnected")
+
+        

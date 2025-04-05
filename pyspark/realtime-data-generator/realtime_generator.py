@@ -8,6 +8,7 @@ import random
 from datetime import datetime, timezone
 import os
 import uuid
+import time
 app = FastAPI()
 API_KEY = os.getenv("API_KEY")
 project_id = os.getenv("GCP_PROJECT_ID")
@@ -85,6 +86,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
     try:
         while True:
+
             ordering_key = str(uuid.uuid4())
             data = generate_complex_iot_data()
 
@@ -97,8 +99,8 @@ async def websocket_endpoint(websocket: WebSocket):
                 print(f"Message published successfully: {message_id}")
             except Exception as e:
                 print(f"Failed to publish message: {e}")
+            time.sleep(60)
             await websocket.send_json(data)
     except WebSocketDisconnect:
         print("Client disconnected")
 
-        

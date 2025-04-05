@@ -1,96 +1,106 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema#",
-    "title": "DeviceTelemetry",
-    "type": "object",
-    "required": [
-      "device_id", "device_type", "timestamp", "location", "sensors",
-      "alerts", "status", "battery_level", "network", "metadata"
-    ],
-    "properties": {
-      "device_id": { "type": "string" },
-      "device_type": { "type": "string" },
-      "timestamp": {
-        "type": "string",
-        "format": "date-time"
-      },
-      "location": {
-        "type": "object",
-        "required": ["latitude", "longitude", "factory_section"],
-        "properties": {
-          "latitude": { "type": "number" },
-          "longitude": { "type": "number" },
-          "factory_section": { "type": "string" }
-        }
-      },
-      "sensors": {
-        "type": "object",
-        "required": ["temperature", "vibration", "energy_consumption", "pressure"],
-        "properties": {
-          "temperature": {
-            "type": "object",
-            "required": ["value", "unit", "status"],
-            "properties": {
-              "value": { "type": "number" },
-              "unit": { "type": "string" },
-              "status": { "type": "string" }
+  "type": "record",
+  "name": "DeviceTelemetry",
+  "namespace": "com.example.iot",
+  "fields": [
+    { "name": "device_id", "type": "string" },
+    { "name": "device_type", "type": "string" },
+    { "name": "timestamp", "type": "string" },
+    {
+      "name": "location",
+      "type": {
+        "type": "record",
+        "name": "Location",
+        "fields": [
+          { "name": "latitude", "type": "double" },
+          { "name": "longitude", "type": "double" },
+          { "name": "factory_section", "type": "string" }
+        ]
+      }
+    },
+    {
+      "name": "sensors",
+      "type": {
+        "type": "record",
+        "name": "Sensors",
+        "fields": [
+          {
+            "name": "temperature",
+            "type": {
+              "type": "record",
+              "name": "Temperature",
+              "fields": [
+                { "name": "value", "type": "double" },
+                { "name": "unit", "type": "string" },
+                { "name": "status", "type": "string" }
+              ]
             }
           },
-          "vibration": {
-            "type": "object",
-            "required": ["value", "unit", "status"],
-            "properties": {
-              "value": { "type": "number" },
-              "unit": { "type": "string" },
-              "status": { "type": "string" }
+          {
+            "name": "vibration",
+            "type": {
+              "type": "record",
+              "name": "Vibration",
+              "fields": [
+                { "name": "value", "type": "double" },
+                { "name": "unit", "type": "string" },
+                { "name": "status", "type": "string" }
+              ]
             }
           },
-          "energy_consumption": {
-            "type": "object",
-            "required": ["value", "unit", "status"],
-            "properties": {
-              "value": { "type": "number" },
-              "unit": { "type": "string" },
-              "status": { "type": "string" }
+          {
+            "name": "energy_consumption",
+            "type": {
+              "type": "record",
+              "name": "EnergyConsumption",
+              "fields": [
+                { "name": "value", "type": "double" },
+                { "name": "unit", "type": "string" },
+                { "name": "status", "type": "string" }
+              ]
             }
           },
-          "pressure": {
-            "type": "object",
-            "required": ["value", "unit", "status"],
-            "properties": {
-              "value": { "type": "number" },
-              "unit": { "type": "string" },
-              "status": { "type": "string" }
+          {
+            "name": "pressure",
+            "type": {
+              "type": "record",
+              "name": "Pressure",
+              "fields": [
+                { "name": "value", "type": "double" },
+                { "name": "unit", "type": "string" },
+                { "name": "status", "type": "string" }
+              ]
             }
           }
-        }
-      },
-      "alerts": {
-        "type": "array",
-        "items": { "type": "string" }
-      },
-      "status": { "type": "string" },
-      "battery_level": { "type": "integer" },
-      "network": {
-        "type": "object",
-        "required": ["signal_strength", "connection_type"],
-        "properties": {
-          "signal_strength": { "type": "integer" },
-          "connection_type": { "type": "string" }
-        }
-      },
-      "metadata": {
-        "type": "object",
-        "required": ["firmware_version", "last_maintenance", "operating_hours", "warranty_valid"],
-        "properties": {
-          "firmware_version": { "type": "string" },
-          "last_maintenance": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "operating_hours": { "type": "integer" },
-          "warranty_valid": { "type": "boolean" }
-        }
+        ]
+      }
+    },
+    { "name": "alerts", "type": { "type": "array", "items": "string" } },
+    { "name": "status", "type": "string" },
+    { "name": "battery_level", "type": "int" },
+    {
+      "name": "network",
+      "type": {
+        "type": "record",
+        "name": "Network",
+        "fields": [
+          { "name": "signal_strength", "type": "int" },
+          { "name": "connection_type", "type": "string" }
+        ]
+      }
+    },
+    {
+      "name": "metadata",
+      "type": {
+        "type": "record",
+        "name": "Metadata",
+        "fields": [
+          { "name": "firmware_version", "type": "string" },
+          { "name": "last_maintenance", "type": "string" },
+          { "name": "operating_hours", "type": "int" },
+          { "name": "warranty_valid", "type": "boolean" }
+        ]
       }
     }
-  }
-  
+  ]
+}

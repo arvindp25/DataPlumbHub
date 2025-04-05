@@ -1,62 +1,176 @@
 [
-    { "name": "device_id", "type": "STRING", "mode": "REQUIRED" },
-    { "name": "device_type", "type": "STRING", "mode": "REQUIRED" },
-    { "name": "timestamp", "type": "TIMESTAMP", "mode": "REQUIRED" },
-    {
-      "name": "location", "type": "RECORD", "mode": "REQUIRED", "fields": [
-        { "name": "latitude", "type": "FLOAT", "mode": "REQUIRED" },
-        { "name": "longitude", "type": "FLOAT", "mode": "REQUIRED" },
-        { "name": "factory_section", "type": "STRING", "mode": "REQUIRED" }
-      ]
-    },
-    {
-      "name": "sensors", "type": "RECORD", "mode": "REQUIRED", "fields": [
-        {
-          "name": "temperature", "type": "RECORD", "mode": "REQUIRED", "fields": [
-            { "name": "value", "type": "FLOAT", "mode": "REQUIRED" },
-            { "name": "unit", "type": "STRING", "mode": "REQUIRED" },
-            { "name": "status", "type": "STRING", "mode": "REQUIRED" }
-          ]
-        },
-        {
-          "name": "vibration", "type": "RECORD", "mode": "REQUIRED", "fields": [
-            { "name": "value", "type": "FLOAT", "mode": "REQUIRED" },
-            { "name": "unit", "type": "STRING", "mode": "REQUIRED" },
-            { "name": "status", "type": "STRING", "mode": "REQUIRED" }
-          ]
-        },
-        {
-          "name": "energy_consumption", "type": "RECORD", "mode": "REQUIRED", "fields": [
-            { "name": "value", "type": "FLOAT", "mode": "REQUIRED" },
-            { "name": "unit", "type": "STRING", "mode": "REQUIRED" },
-            { "name": "status", "type": "STRING", "mode": "REQUIRED" }
-          ]
-        },
-        {
-          "name": "pressure", "type": "RECORD", "mode": "REQUIRED", "fields": [
-            { "name": "value", "type": "FLOAT", "mode": "REQUIRED" },
-            { "name": "unit", "type": "STRING", "mode": "REQUIRED" },
-            { "name": "status", "type": "STRING", "mode": "REQUIRED" }
-          ]
-        }
-      ]
-    },
-    { "name": "alerts", "type": "STRING", "mode": "REPEATED" },
-    { "name": "status", "type": "STRING", "mode": "REQUIRED" },
-    { "name": "battery_level", "type": "INTEGER", "mode": "REQUIRED" },
-    {
-      "name": "network", "type": "RECORD", "mode": "REQUIRED", "fields": [
-        { "name": "signal_strength", "type": "INTEGER", "mode": "REQUIRED" },
-        { "name": "connection_type", "type": "STRING", "mode": "REQUIRED" }
-      ]
-    },
-    {
-      "name": "metadata", "type": "RECORD", "mode": "REQUIRED", "fields": [
-        { "name": "firmware_version", "type": "STRING", "mode": "REQUIRED" },
-        { "name": "last_maintenance", "type": "TIMESTAMP", "mode": "REQUIRED" },
-        { "name": "operating_hours", "type": "INTEGER", "mode": "REQUIRED" },
-        { "name": "warranty_valid", "type": "BOOLEAN", "mode": "REQUIRED" }
-      ]
-    }
-  ]
-  
+  {
+    "name": "device_id",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "device_type",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "timestamp",
+    "type": "DATE",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "location",
+    "type": "RECORD",
+    "fields": [
+      {
+        "name": "latitude",
+        "type": "FLOAT"
+      },
+      {
+        "name": "longitude",
+        "type": "FLOAT"
+      },
+      {
+        "name": "factory_section",
+        "type": "STRING"
+      }
+    ]
+  },
+  {
+    "name": "sensors",
+    "type": "RECORD",
+    "fields": [
+      {
+        "name": "temperature",
+        "type": "RECORD",
+        "fields": [
+          {
+            "name": "value",
+            "type": "FLOAT",
+            "mode": "NULLABLE"
+          },
+          {
+            "name": "unit",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "name": "status",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          }
+        ]
+      },
+      {
+        "name": "vibration",
+        "type": "RECORD",
+        "fields": [
+          {
+            "name": "value",
+            "type": "FLOAT",
+            "mode": "NULLABLE"
+          },
+          {
+            "name": "unit",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "name": "status",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          }
+        ]
+      },
+      {
+        "name": "energy_consumption",
+        "type": "RECORD",
+        "fields": [
+          {
+            "name": "value",
+            "type": "FLOAT",
+            "mode": "NULLABLE"
+          },
+          {
+            "name": "unit",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "name": "status",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          }
+        ]
+      },
+      {
+        "name": "pressure",
+        "type": "RECORD",
+        "fields": [
+          {
+            "name": "value",
+            "type": "FLOAT",
+            "mode": "NULLABLE"
+          },
+          {
+            "name": "unit",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          },
+          {
+            "name": "status",
+            "type": "STRING",
+            "mode": "NULLABLE"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "alerts",
+    "type": "STRING",
+    "mode": "REPEATED"
+  },
+  {
+    "name": "status",
+    "type": "STRING",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "battery_level",
+    "type": "INTEGER",
+    "mode": "NULLABLE"
+  },
+  {
+    "name": "network",
+    "type": "RECORD",
+    "fields": [
+      {
+        "name": "signal_strength",
+        "type": "INTEGER"
+      },
+      {
+        "name": "connection_type",
+        "type": "STRING"
+      }
+    ]
+  },
+  {
+    "name": "metadata",
+    "type": "RECORD",
+    "fields": [
+      {
+        "name": "firmware_version",
+        "type": "STRING"
+      },
+      {
+        "name": "last_maintenance",
+        "type": "DATE"
+      },
+      {
+        "name": "operating_hours",
+        "type": "INTEGER"
+      },
+      {
+        "name": "warranty_valid",
+        "type": "BOOLEAN"
+      }
+    ]
+  }
+]

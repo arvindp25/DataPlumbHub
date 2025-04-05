@@ -1,0 +1,96 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "DeviceTelemetry",
+    "type": "object",
+    "required": [
+      "device_id", "device_type", "timestamp", "location", "sensors",
+      "alerts", "status", "battery_level", "network", "metadata"
+    ],
+    "properties": {
+      "device_id": { "type": "string" },
+      "device_type": { "type": "string" },
+      "timestamp": {
+        "type": "string",
+        "format": "date-time"
+      },
+      "location": {
+        "type": "object",
+        "required": ["latitude", "longitude", "factory_section"],
+        "properties": {
+          "latitude": { "type": "number" },
+          "longitude": { "type": "number" },
+          "factory_section": { "type": "string" }
+        }
+      },
+      "sensors": {
+        "type": "object",
+        "required": ["temperature", "vibration", "energy_consumption", "pressure"],
+        "properties": {
+          "temperature": {
+            "type": "object",
+            "required": ["value", "unit", "status"],
+            "properties": {
+              "value": { "type": "number" },
+              "unit": { "type": "string" },
+              "status": { "type": "string" }
+            }
+          },
+          "vibration": {
+            "type": "object",
+            "required": ["value", "unit", "status"],
+            "properties": {
+              "value": { "type": "number" },
+              "unit": { "type": "string" },
+              "status": { "type": "string" }
+            }
+          },
+          "energy_consumption": {
+            "type": "object",
+            "required": ["value", "unit", "status"],
+            "properties": {
+              "value": { "type": "number" },
+              "unit": { "type": "string" },
+              "status": { "type": "string" }
+            }
+          },
+          "pressure": {
+            "type": "object",
+            "required": ["value", "unit", "status"],
+            "properties": {
+              "value": { "type": "number" },
+              "unit": { "type": "string" },
+              "status": { "type": "string" }
+            }
+          }
+        }
+      },
+      "alerts": {
+        "type": "array",
+        "items": { "type": "string" }
+      },
+      "status": { "type": "string" },
+      "battery_level": { "type": "integer" },
+      "network": {
+        "type": "object",
+        "required": ["signal_strength", "connection_type"],
+        "properties": {
+          "signal_strength": { "type": "integer" },
+          "connection_type": { "type": "string" }
+        }
+      },
+      "metadata": {
+        "type": "object",
+        "required": ["firmware_version", "last_maintenance", "operating_hours", "warranty_valid"],
+        "properties": {
+          "firmware_version": { "type": "string" },
+          "last_maintenance": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "operating_hours": { "type": "integer" },
+          "warranty_valid": { "type": "boolean" }
+        }
+      }
+    }
+  }
+  

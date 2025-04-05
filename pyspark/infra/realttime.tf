@@ -82,7 +82,7 @@ resource "google_cloud_run_v2_service_iam_policy" "noauth" {
 resource "google_pubsub_schema" "iot_sensor_data_schema" {
   name = "iot_sensor_data_schema"
   type = "PROTOCOL_BUFFER"
-  definition = file("./iot_sensor_data.json")
+  definition = file("./iot_sensor_data_ps.json")
 
 }
 

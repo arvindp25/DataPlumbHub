@@ -95,6 +95,9 @@ resource "google_pubsub_topic" "iot_sensor_data" {
   }
 
 }
+resource "google_pubsub_topic" "dlq_topic" {
+  name = "iot-sensor-topic_dlq"
+}
 
 resource "google_pubsub_subscription" "iot-sensor-subscription" {
   name  = "iot-sensor-subscription"
@@ -121,7 +124,7 @@ resource "google_pubsub_subscription" "bigquery_subscription" {
   name  = "bigquery_subscription"
   topic = google_pubsub_topic.iot_sensor_data.name
     dead_letter_policy {
-    dead_letter_topic = google_pubsub_topic.iot_sensor_data.id
+    dead_letter_topic = google_pubsub_topic.dlq_topic.id
     max_delivery_attempts = 10
   }
   ack_deadline_seconds = 30

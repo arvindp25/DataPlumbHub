@@ -120,6 +120,11 @@ resource "google_pubsub_subscription" "iot-sensor-subscription" {
 resource "google_pubsub_subscription" "bigquery_subscription" {
   name  = "bigquery_subscription"
   topic = google_pubsub_topic.iot_sensor_data.name
+    dead_letter_policy {
+    dead_letter_topic = google_pubsub_topic.example_dead_letter.id
+    max_delivery_attempts = 10
+  }
+  ack_deadline_seconds = 30
 
   bigquery_config {
     table = "${google_bigquery_table.iot_sensor_data.project}.${google_bigquery_table.iot_sensor_data.dataset_id}.${google_bigquery_table.iot_sensor_data.table_id}"

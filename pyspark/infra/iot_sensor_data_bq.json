@@ -11,7 +11,7 @@
   },
   {
     "name": "timestamp",
-    "type": "TIMESTAMP",
+    "type": "STRING",
     "mode": "NULLABLE"
   },
   {
@@ -161,7 +161,7 @@
       },
       {
         "name": "last_maintenance",
-        "type": "TIMESTAMP"
+        "type": "STRING"
       },
       {
         "name": "operating_hours",

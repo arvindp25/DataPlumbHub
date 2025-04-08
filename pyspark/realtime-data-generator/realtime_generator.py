@@ -24,7 +24,7 @@ def generate_complex_iot_data():
     return {
         "device_id": f"machine_{random.randint(100, 999)}",
         "device_type": random.choice(["industrial_robot", "CNC_machine", "conveyor_belt"]),
-        "timestamp":  datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
+        "timestamp":  datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S"),
         "location": {
             "latitude": round(random.uniform(-90, 90), 6),
             "longitude": round(random.uniform(-180, 180), 6),
@@ -57,7 +57,7 @@ def generate_complex_iot_data():
                 "type": "pressure",
                 "severity": "critical",
                 "message": "Pressure too high! Immediate action required",
-                "timestamp":  datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%fZ")
+                "timestamp":  datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S")
             }
         ] if random.random() < 0.3 else [],  # 30% chance of an alert
         "status": random.choice(["operational", "maintenance_required", "faulty"]),
@@ -68,7 +68,7 @@ def generate_complex_iot_data():
         },
         "metadata": {
             "firmware_version": f"3.{random.randint(0,9)}.{random.randint(0,9)}",
-            "last_maintenance":  datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
+            "last_maintenance":  datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S"),
             "operating_hours": random.randint(1000, 5000),
             "warranty_valid": random.choice([True, False])
         }

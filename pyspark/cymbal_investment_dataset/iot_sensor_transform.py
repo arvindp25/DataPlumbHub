@@ -1,7 +1,7 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.window import Window
 from pyspark.sql.functions import udf, col
-from py4j.protocol import Py4JavaError
+from py4j.protocol import Py4JJavaError
 import sys
 from geopy.geocoders import Nominatim
 
@@ -13,7 +13,7 @@ def init_sparksession(appname = "sensor_data"):
 def load_source_table(spark,source_table):
     try:
         table_df =spark.read.format("bigquery").option('table', source_table).option("temporaryGcsBucket", staging_bucket).getOrCreate()
-    except Py4JavaError as e:
+    except Py4JJavaError as e:
         print(f"Table {source_table} not found.")
         raise
     print("Current df size:", table_df.count(), table_df.columns)

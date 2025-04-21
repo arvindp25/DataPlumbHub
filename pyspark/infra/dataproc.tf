@@ -4,6 +4,9 @@ resource "google_dataproc_cluster" "pyspark_dataproc_cluster" {
 
   cluster_config {
     staging_bucket = google_storage_bucket.pyspark_staging_bucket.name
+    endpoint_config {
+               enable_http_port_access = "true"
+        }
     master_config {
       num_instances = 1
       machine_type  = "n1-standard-2"

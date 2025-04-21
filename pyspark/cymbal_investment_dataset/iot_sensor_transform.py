@@ -29,7 +29,7 @@ def get_address(latitude, longitude):
     return location
 
 
-def transform_df(df, des_table):
+def transform_df(df):
     df = df.withColumn('zip', get_address(col('location.latitude'), col('location.longitude')))
     return df
 
@@ -49,3 +49,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

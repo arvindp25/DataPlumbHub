@@ -31,6 +31,24 @@ resource "google_dataproc_cluster" "pyspark_dataproc_cluster" {
 
 
 
+# resource "google_dataproc_job" "pyspark" {
+#   region       = google_dataproc_cluster.pyspark_dataproc_cluster.region
+#   depends_on = [ google_dataproc_cluster.pyspark_dataproc_cluster ]
+#   force_delete = true
+#   placement {
+#     cluster_name = google_dataproc_cluster.pyspark_dataproc_cluster.name
+#   }
+
+#   pyspark_config {
+#     main_python_file_uri = "gs://${google_storage_bucket.pyspark_files.name}/${var.commit_hash}/iot_sensor_transform.py"
+#     args = ["arvind-develop.data_transformed.iot_sensor_data", "${ google_bigquery_dataset.data_transformed.dataset_id }", google_storage_bucket.pyspark_staging_bucket.name ]
+#     properties = {
+#       "spark.logConf" = "true"
+#     }
+#   }
+# }
+
+
 resource "google_dataproc_job" "pyspark" {
   region       = google_dataproc_cluster.pyspark_dataproc_cluster.region
   depends_on = [ google_dataproc_cluster.pyspark_dataproc_cluster ]
@@ -40,11 +58,10 @@ resource "google_dataproc_job" "pyspark" {
   }
 
   pyspark_config {
-    main_python_file_uri = "gs://${google_storage_bucket.pyspark_files.name}/${var.commit_hash}/iot_sensor_transform.py"
-    args = ["arvind-develop.data_transformed.iot_sensor_data", "${ google_bigquery_dataset.data_transformed.dataset_id }", google_storage_bucket.pyspark_staging_bucket.name ]
+    main_python_file_uri = "gs://${google_storage_bucket.pyspark_files.name}/sql-ds/${var.commit_hash}/citibike_trips.py"
+    args = ["bigquery-public-data.cms_open_payments.general_payment_data", "${ google_bigquery_dataset.data_transformed.dataset_id }", google_storage_bucket.pyspark_staging_bucket.name ]
     properties = {
       "spark.logConf" = "true"
     }
   }
 }
-

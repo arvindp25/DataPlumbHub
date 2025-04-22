@@ -22,5 +22,20 @@ def load_source_table(spark, source_table_name):
     print("Columns:", df.columns)
 
 def transform_df(df1, df2):
+    """
+      with cte as (
+    select start_station_id, extract(hour from start_time) hour_of_day, count(trip_id) total_trips from bigquery-public-data.austin_bikeshare.bikeshare_trips bt
+    group by start_station_id, hour_of_day
+  ),
+   rn as (
+  select name as borough, hour_of_day, total_trips, rank() over (partition by name order by total_trips desc) rank_ from cte bt
+  join bigquery-public-data.austin_bikeshare.bikeshare_stations bs
+  on 
+  bs.station_id = bt.start_station_id
+  )
+  select * except (rank_) from rn
+  where rank_ =1
+    """
+    
     
     

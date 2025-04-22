@@ -9,6 +9,7 @@ Dataset: bigquery-public-data.new_york_citibike.citibike_trips
 
         std_dev_trips_per_day
         Consider only stations with at least 200 days of usage and a minimum of 50 trips per day on average.
+        Solution:- citibike_trips.py
 
 2. Busiest Hour by Borough
 

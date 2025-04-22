@@ -47,8 +47,8 @@ def load_source_table(spark):
 
 def transform_df(df):
     df = df.withColumn("start_date", f.to_date(f.col("starttime")))
-    df = df.groupBy(["start_station_name", "start_date"]).agg(f.count().alias("trip_count"))
-    df = df.groupBy(["start_station_name"]).agg(f.count().alias("days_used"),f.avg("trip_count").alias("avg_trip_count"),\
+    df = df.groupBy(["start_station_name", "start_date"]).agg(f.count("*").alias("trip_count"))
+    df = df.groupBy(["start_station_name"]).agg(f.count("*").alias("days_used"),f.avg("trip_count").alias("avg_trip_count"),\
                                                 f.stdev("trip_count").alias("std_dev_trips_per_day")
                                                 )\
                                                 .filter(f.col("avg_trip_count") >= 50 and f.col("days_used") >= 200)

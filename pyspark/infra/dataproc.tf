@@ -59,7 +59,7 @@ resource "google_dataproc_job" "pyspark" {
 
   pyspark_config {
     main_python_file_uri = "gs://${google_storage_bucket.pyspark_files.name}/sql-ds/${var.commit_hash}/citibike_trips.py"
-    args = ["bigquery-public-data.cms_open_payments.general_payment_data", "${ google_bigquery_dataset.data_transformed.dataset_id }", google_storage_bucket.pyspark_staging_bucket.name ]
+    args = ["bigquery-public-data.new_york_citibike.citibike_trips", "${ google_bigquery_dataset.data_transformed.dataset_id }", google_storage_bucket.pyspark_staging_bucket.name ]
     properties = {
       "spark.logConf" = "true"
     }

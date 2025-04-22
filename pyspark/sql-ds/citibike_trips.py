@@ -51,7 +51,7 @@ def transform_df(df):
     df = df.groupBy(["start_station_name"]).agg(f.count("*").alias("days_used"),f.avg("trip_count").alias("avg_trip_count"),\
                                                 f.stddev("trip_count").alias("std_dev_trips_per_day")
                                                 )\
-                                                .filter(f.col("avg_trip_count") >= 50 and f.col("days_used") >= 200)
+                                                .filter(f.col("avg_trip_count") >= 50 & f.col("days_used") >= 200)
     return df
 
 def dump_df_to_bq(df, dest_table):

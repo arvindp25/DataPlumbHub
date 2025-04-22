@@ -59,7 +59,7 @@ def main():
     dest_table = f"{sys.argv[2]}.citibike_trips_std_dev"
 
     spark = init_sparksession()
-    df = load_source_table(spark,source_table)
+    df = load_source_table(spark)
     df= transform_df(df)
 
     dump_df_to_bq(df,dest_table)

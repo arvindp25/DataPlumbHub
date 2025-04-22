@@ -42,6 +42,8 @@ def load_source_table(spark):
         raise
     print("Current df size:", (table_df.count(), len(table_df.columns)))
     print("Columns:", table_df.columns)
+    return df
+
 
 def transform_df(df):
     df = df.withColumn("start_date", f.to_date(f.col("starttime")))

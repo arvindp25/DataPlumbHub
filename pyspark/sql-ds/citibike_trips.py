@@ -31,7 +31,8 @@ import sys
 staging_bucket = sys.argv[3]
 
 def init_sparksession(appname = "citibike_trips"):
-    return SparkSession.builder.master("yarn").appName(appname)
+    return SparkSession.builder.master("yarn").appName(appname)\
+    .config("temporaryGcsBucket", staging_bucket).getOrCreate()
 
 def load_source_table(spark):
     try:

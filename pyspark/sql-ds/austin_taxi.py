@@ -63,8 +63,8 @@ def main():
     spark = init_sparksession()
     key_with_bucket = f"{sys.argv[3]}/austin_taxi/output.csv"
     sc =  source_table.split(",")
-    df_1 = load_source_table(sc[0])
-    df_2 = load_source_table(sc[1])
+    df_1 = load_source_table(spark,sc[0])
+    df_2 = load_source_table(spark,sc[1])
     df = transform_df(df_1,df_2)
     load_to_gcs(df,key_with_bucket)
 

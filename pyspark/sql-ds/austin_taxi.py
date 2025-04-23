@@ -42,7 +42,7 @@ def transform_df(df1, df2):
 
     df1 = df1.groupBy(["start_station_id", "hour_of_day"]).agg(f.count(f.col("trip_id"))\
                                                                .alias("autoBroadcastJoinThreshold"))
-    df =df1.alias("bs").join(df2.alias("bt"), f.col("bs.station_id") ==  f.col("bt.station_id"))
+    df =df1.alias("bs").join(df2.alias("bt"), f.col("bs.station_id") ==  f.col("bt.start_station_id"))
 
     window = Window.partitionBy(f.col("name")).orderBy("autoBroadcastJoinThreshold").desc()
 

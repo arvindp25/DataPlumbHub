@@ -66,8 +66,10 @@ def main():
     df_1 = load_source_table(sc[0])
     df_2 = load_source_table(sc[1])
     df = transform_df(df_1,df_2)
-    load_to_gcs(df)
-    
+    load_to_gcs(df,key_with_bucket)
+
+if __name__ == "__main__":
+    main()    
 
 
 

@@ -44,7 +44,7 @@ def transform_df(df1, df2):
                                                                .alias("autoBroadcastJoinThreshold"))
     df =df1.alias("bt").join(df2.alias("bs"), f.col("bs.station_id") ==  f.col("bt.start_station_id"))
 
-    window = Window.partitionBy(f.col("name")).orderBy("autoBroadcastJoinThreshold").desc()
+    window = Window.partitionBy(f.col("name")).orderBy(f.col("total_trips").desc())
 
     df = df.withColumn("rank_". f.rank().over(window))
     df =df.filter(f.when(f.col("rank_") ==1))

@@ -47,7 +47,7 @@ def transform_df(df1, df2):
     window = Window.partitionBy(f.col("name")).orderBy(f.col("total_trips").desc())
 
     df = df.withColumn("rank_", f.rank().over(window))
-    df =df.filter(f.when(f.col("rank_") ==1))
+    df =df.filter(f.col("rank_") ==1)
 
     return df
 

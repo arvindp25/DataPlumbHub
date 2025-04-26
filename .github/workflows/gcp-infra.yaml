@@ -13,6 +13,9 @@ env:
 on:
   push:
     branches: [ "main" ]
+    paths:
+      .github/workflows/gcp-infra.yaml
+      /pyspark/*
   pull_request:
   workflow_dispatch:
     inputs:

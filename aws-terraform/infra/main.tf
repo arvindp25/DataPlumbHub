@@ -20,3 +20,11 @@ resource "aws_s3_bucket" "test" {
     bucket = "test4577h85"
   
 }
+
+
+resource "aws_instance" "ec2_instance" {
+    ami = "ami-0f1dcc636b69a6438"
+    instance_type = "t2.micro"
+
+  
+}

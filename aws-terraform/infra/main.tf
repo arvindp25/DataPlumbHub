@@ -17,6 +17,6 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "test" {
-    bucket = "test457785"
+    bucket = "test4577h85"
   
 }

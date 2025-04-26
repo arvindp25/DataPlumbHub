@@ -37,7 +37,7 @@ jobs:
     defaults:
       run:
         shell: bash
-        working-directory: ./aws-tarraform/infra/
+        working-directory: ./aws-terraform/infra/
 
     steps:
     # Checkout the repository to the GitHub Actions runner

@@ -50,7 +50,7 @@ resource "aws_instance" "ec2_instance" {
     depends_on = [ aws_security_group.allow_ssh ]
     ami = "ami-0f1dcc636b69a6438"
     instance_type = "t2.micro"
-    security_groups = [aws_security_group.allow_ssh.id]
+    vpc_security_group_ids  = ["${aws_security_group.allow_ssh.id}"]
     tags = {
       Name = "ec2_instance"
     }

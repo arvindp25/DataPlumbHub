@@ -1,5 +1,7 @@
 terraform {
-  backend "s3" {}
+  backend "s3" {
+    key    = "envs/terraform.tfstate"
+  }
 
   required_providers {
     aws = {

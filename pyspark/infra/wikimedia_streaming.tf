@@ -28,16 +28,16 @@ resource "null_resource" "copy_image_to_artifcat_registory_wiki" {
 
 }
 
-resource "google_cloud_run_v2_service" "wikimedia-streaming-app" {
-  name     = "wikimedia-streaming"
+resource "google_cloud_run_v2_job" "wikimedia-streaming-app" {
+  name     = "wikimedia-streaming-job"
   location = var.location
   deletion_protection = false
-  ingress = "INGRESS_TRAFFIC_ALL"
+  depends_on = [null_resource.copy_image_to_artifcat_registory_wiki]
 
   template {
-    scaling {
-      max_instance_count = 2
-    }
+    template {
+      
+
 
     containers {
       image = "${google_artifact_registry_repository.docker_images.location}-docker.pkg.dev/${var.gcp_project_id}/${google_artifact_registry_repository.docker_images.repository_id}/wikimedia-streaming:${var.commit_hash}"
@@ -50,28 +50,16 @@ resource "google_cloud_run_v2_service" "wikimedia-streaming-app" {
         name = "PUB_SUB_TOPIC"
         value = google_pubsub_topic.wikimedia_streaming.name
       }
-
+     
+    }
+       max_retries = 1
+      timeout     = "3600s"
+    }
+    
     }
   }
 
-  depends_on = [null_resource.copy_image_to_artifcat_registory_wiki]
-}
-
-
-resource "google_cloud_run_v2_service_iam_policy" "noauth-wikimedia" {
-    name =  google_cloud_run_v2_service.wikimedia-streaming-app.name
-  location = google_cloud_run_v2_service.wikimedia-streaming-app.location
-  project  = google_cloud_run_v2_service.wikimedia-streaming-app.project
-
-  policy_data = jsonencode({
-    bindings = [
-      {
-        role    = "roles/run.invoker"
-        members = ["allUsers"]
-      }
-    ]
-  })
-}
+  
 
 
 resource "google_pubsub_topic" "wikimedia_streaming" {
@@ -120,4 +108,10 @@ resource "google_pubsub_subscription" "wikimedia-subscription" {
 #   }
 
 #   # depends_on = [google_project_iam_member.viewer, google_project_iam_member.editor]
+# }
+
+# resource "google_project_iam_member" "run_job_pubsub_publisher" {
+#   project = var.gcp_project_id
+#   role    = "roles/pubsub.publisher"
+#   member  = "serviceAccount:${google_cloud_run_v2_job.wiki_stream_job.template.0.template.0.service_account}"
 # }

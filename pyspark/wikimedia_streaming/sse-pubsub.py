@@ -3,11 +3,7 @@ import requests
 from requests_sse import EventSource
 import json
 import os
-from flask import Flask
 from google.cloud import pubsub_v1
-import threading
-
-app = Flask(__name__)
 
 project_id = os.getenv("GCP_PROJECT_ID")
 topic_id = os.getenv("PUB_SUB_TOPIC")
@@ -25,12 +21,5 @@ def stream_and_publish():
     except Exception as e:
         print(f"Exception: {e}")
 
-@app.route("/")
-def home():
-    return "Service is up!"
-
-@app.route("/start")
-def start_streaming():
-    thread = threading.Thread(target=stream_and_publish)
-    thread.start()
-    return "Started streaming."
+if __name__ =="__main__":
+    stream_and_publish()

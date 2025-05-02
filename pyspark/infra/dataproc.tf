@@ -66,19 +66,19 @@ resource "google_dataproc_cluster" "pyspark_dataproc_cluster" {
 #   }
 # }
 
-resource "google_dataproc_job" "austin_taxi" {
-  region       = google_dataproc_cluster.pyspark_dataproc_cluster.region
-  depends_on = [ google_dataproc_cluster.pyspark_dataproc_cluster ]
-  force_delete = true
-  placement {
-    cluster_name = google_dataproc_cluster.pyspark_dataproc_cluster.name
-  }
+# resource "google_dataproc_job" "austin_taxi" {
+#   region       = google_dataproc_cluster.pyspark_dataproc_cluster.region
+#   depends_on = [ google_dataproc_cluster.pyspark_dataproc_cluster ]
+#   force_delete = true
+#   placement {
+#     cluster_name = google_dataproc_cluster.pyspark_dataproc_cluster.name
+#   }
 
-  pyspark_config {
-    main_python_file_uri = "gs://${google_storage_bucket.pyspark_files.name}/sql-ds/${var.commit_hash}/austin_taxi.py"
-    args = ["bigquery-public-data.austin_bikeshare.bikeshare_trips,bigquery-public-data.austin_bikeshare.bikeshare_stations", "${ google_bigquery_dataset.data_transformed.dataset_id }", google_storage_bucket.pyspark_staging_bucket.name ]
-    properties = {
-      "spark.logConf" = "true"
-    }
-  }
-}
+#   pyspark_config {
+#     main_python_file_uri = "gs://${google_storage_bucket.pyspark_files.name}/sql-ds/${var.commit_hash}/austin_taxi.py"
+#     args = ["bigquery-public-data.austin_bikeshare.bikeshare_trips,bigquery-public-data.austin_bikeshare.bikeshare_stations", "${ google_bigquery_dataset.data_transformed.dataset_id }", google_storage_bucket.pyspark_staging_bucket.name ]
+#     properties = {
+#       "spark.logConf" = "true"
+#     }
+#   }
+# }

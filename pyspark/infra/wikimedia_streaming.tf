@@ -54,7 +54,7 @@ resource "google_cloud_run_v2_service" "wikimedia-streaming-app" {
     }
   }
 
-  depends_on = [null_resource.copy_image_to_artifcat_registory]
+  depends_on = [null_resource.copy_image_to_artifcat_registory_wiki]
 }
 
 

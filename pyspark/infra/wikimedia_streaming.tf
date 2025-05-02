@@ -48,7 +48,7 @@ resource "google_cloud_run_v2_service" "wikimedia-streaming-app" {
       }
         env {
         name = "PUB_SUB_TOPIC"
-        value = google_pubsub_topic.iot_sensor_data.name
+        value = google_pubsub_topic.wikimedia_streaming.name
       }
 
     }

@@ -31,3 +31,11 @@ resource "google_storage_bucket" "pyspark_staging_bucket" {
 #   name   = "sql-ds/${var.commit_hash}/${each.value}"  # Destination path in the bucket
 #   source = "../sql-ds/${each.value}"  # Local file path
 # }
+
+resource "google_storage_bucket_object" "copy_sql_ds_file_to_gcs" {
+  for_each = fileset("../wikimedia_streaming", "*")  # Change path and pattern as needed
+  
+  bucket =google_storage_bucket.pyspark_files.name
+  name   = "wikimedia_streaming/${var.commit_hash}/${each.value}"  # Destination path in the bucket
+  source = "../wikimedia_streaming/${each.value}"  # Local file path
+}

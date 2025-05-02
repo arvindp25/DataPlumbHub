@@ -14,7 +14,7 @@ resource "google_storage_bucket" "pyspark_files" {
 #  force_destroy = true
 
 #  uniform_bucket_level_access = true
-}
+# }
 
 # resource "google_storage_bucket_object" "copy_files_to_gcs" {
 #   for_each = fileset("../cymbal_investment_dataset", "*")  # Change path and pattern as needed

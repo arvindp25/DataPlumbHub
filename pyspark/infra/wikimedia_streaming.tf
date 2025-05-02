@@ -29,7 +29,7 @@ resource "null_resource" "copy_image_to_artifcat_registory_wiki" {
 }
 
 resource "google_cloud_run_v2_service" "wikimedia-streaming-app" {
-  name     = "wikimedia_streaming"
+  name     = "wikimedia-streaming"
   location = var.location
   deletion_protection = false
   ingress = "INGRESS_TRAFFIC_ALL"

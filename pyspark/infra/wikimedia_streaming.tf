@@ -28,7 +28,7 @@ resource "null_resource" "copy_image_to_artifcat_registory" {
 
 }
 
-resource "google_cloud_run_v2_service" "mock-data-generator" {
+resource "google_cloud_run_v2_service" "wikimedia-streaming-app" {
   name     = "wikimedia_streaming"
   location = var.location
   deletion_protection = false
@@ -58,10 +58,10 @@ resource "google_cloud_run_v2_service" "mock-data-generator" {
 }
 
 
-resource "google_cloud_run_v2_service_iam_policy" "noauth" {
-    name =  google_cloud_run_v2_service.mock-data-generator.name
-  location = google_cloud_run_v2_service.mock-data-generator.location
-  project  = google_cloud_run_v2_service.mock-data-generator.project
+resource "google_cloud_run_v2_service_iam_policy" "noauth-wikimedia" {
+    name =  google_cloud_run_v2_service.wikimedia-streaming-app.name
+  location = google_cloud_run_v2_service.wikimedia-streaming-app.location
+  project  = google_cloud_run_v2_service.wikimedia-streaming-app.project
 
   policy_data = jsonencode({
     bindings = [

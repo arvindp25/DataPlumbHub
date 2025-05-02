@@ -82,3 +82,20 @@ resource "google_dataproc_cluster" "pyspark_dataproc_cluster" {
 #     }
 #   }
 # }
+
+resource "google_dataproc_job" "spark_streaming" {
+  region       = google_dataproc_cluster.pyspark_dataproc_cluster.region
+  depends_on = [ google_dataproc_cluster.pyspark_dataproc_cluster ]
+  force_delete = true
+  placement {
+    cluster_name = google_dataproc_cluster.pyspark_dataproc_cluster.name
+  }
+
+  pyspark_config {
+    main_python_file_uri = "gs://${google_storage_bucket.pyspark_files.name}/wikimdeia_streaming/${var.commit_hash}/spark-streaming.py"
+    args = ["--subscription_id, ${google_pubsub_subscription.wikimedia-subscription.name}"]
+    properties = {
+      "spark.logConf" = "true"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+version: '3'
+services:
+  pyspark:
+    image: jupyter/pyspark-notebook:latest
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/home/jovyan/work
+    environment:
+      - PUBSUB_EMULATOR_HOST=pubsub:8085
+    depends_on:
+      - pubsub
+
+  pubsub:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8085:8085"

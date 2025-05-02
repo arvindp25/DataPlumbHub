@@ -1,17 +1,17 @@
-# resource "google_storage_bucket" "pyspark_files" {
-#  name          = "dataproc_python_file"
-#  location = "asia-south1"
-#  storage_class = "STANDARD"
-#  force_destroy = true
-
-# #  uniform_bucket_level_access = true
-# }
-
-resource "google_storage_bucket" "pyspark_staging_bucket" {
- name          = "pyspark_staging_bucket"
+resource "google_storage_bucket" "pyspark_files" {
+ name          = "dataproc_python_file"
  location = "asia-south1"
  storage_class = "STANDARD"
  force_destroy = true
+
+#  uniform_bucket_level_access = true
+}
+
+# resource "google_storage_bucket" "pyspark_staging_bucket" {
+#  name          = "pyspark_staging_bucket"
+#  location = "asia-south1"
+#  storage_class = "STANDARD"
+#  force_destroy = true
 
 #  uniform_bucket_level_access = true
 }

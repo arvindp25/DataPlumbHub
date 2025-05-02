@@ -11,7 +11,7 @@ resource "google_artifact_registry_repository" "docker_images" {
 
 # using null resource to convert code to docker image in github
 
-resource "null_resource" "copy_image_to_artifcat_registory" {
+resource "null_resource" "copy_image_to_artifcat_registory_wiki" {
   triggers = {
     always = var.commit_hash
   }
@@ -80,7 +80,7 @@ resource "google_pubsub_topic" "wikimedia_streaming" {
 
 
 }
-resource "google_pubsub_topic" "dlq_topic" {
+resource "google_pubsub_topic" "dlq_topic_wiki" {
   name = "wikimedia-sse-topic_dlq"
 }
 

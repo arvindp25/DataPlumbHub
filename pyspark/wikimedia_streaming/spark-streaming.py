@@ -10,7 +10,7 @@ parser.add_argument("--subscription_id", required=True)
 
 args = parser.parse_args()
 
-spark = SparkSession.master.builder.appName("WikiMedia Streaming").getOrcreate()
+spark = SparkSession.master.builder.appName("WikiMedia Streaming").config("temporaryGcsBucket", args.staging_bucket).getOrcreate()
 
 sdf = spark.readStream.format("pubsublite")\
     .option("pubsublite.subscription", args.subscription_id).load()

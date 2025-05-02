@@ -93,7 +93,9 @@ resource "google_dataproc_job" "spark_streaming" {
 
   pyspark_config {
     main_python_file_uri = "gs://${google_storage_bucket.pyspark_files.name}/wikimdeia_streaming/${var.commit_hash}/spark-streaming.py"
-    args = ["--subscription_id, ${google_pubsub_subscription.wikimedia-subscription.name}"]
+    args = ["--subscription_id, ${google_pubsub_subscription.wikimedia-subscription.name}",
+            "--staging_bucket, ${google_storage_bucket.pyspark_staging_bucket.name}"
+    ]
     properties = {
       "spark.logConf" = "true"
     }

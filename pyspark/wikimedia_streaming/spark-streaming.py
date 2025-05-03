@@ -58,6 +58,7 @@ spark = SparkSession.builder.master("yarn").appName("WikiMedia Streaming").confi
 # Read JSON files as they appear (line-delimited JSON per file)
 sdf = spark.readStream \
     .format("json") \
+    .schema(schema) \
     .option("maxFilesPerTrigger", 1) \
     .load(args.streaming_bucket)
 

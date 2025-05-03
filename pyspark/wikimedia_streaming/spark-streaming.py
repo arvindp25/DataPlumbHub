@@ -13,10 +13,6 @@ args = parser.parse_args()
 
 spark = SparkSession.builder.master("yarn").appName("WikiMedia Streaming").config("temporaryGcsBucket", args.staging_bucket).getOrCreate()
 
-sdf = spark.readStream.format("pubsub")\
-    .option("subscription", args.subscription_id).load()
-
-
 # Read JSON files as they appear (line-delimited JSON per file)
 sdf = spark.readStream \
     .format("json") \

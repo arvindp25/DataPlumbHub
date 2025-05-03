@@ -78,7 +78,7 @@ resource "google_pubsub_subscription" "wikimedia-subscription" {
 
 
   # 20 minutes
-  message_retention_duration = "10s"
+  message_retention_duration = "10m"
   retain_acked_messages      = false
 
   ack_deadline_seconds = 20

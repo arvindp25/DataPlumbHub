@@ -111,8 +111,8 @@ resource "google_pubsub_subscription" "gcs_subscription" {
   # depends_on = [google_project_iam_member.viewer, google_project_iam_member.editor]
 }
 
-resource "google_project_iam_member" "run_job_pubsub_publisher" {
-  project = var.gcp_project_id
-  role    = "roles/pubsub.publisher"
-  member  = "serviceAccount:${google_cloud_run_v2_job.wiki_stream_job.template.0.template.0.service_account}"
-}
+# resource "google_project_iam_member" "run_job_pubsub_publisher" {
+#   project = var.gcp_project_id
+#   role    = "roles/pubsub.publisher"
+#   member  = "serviceAccount:${google_cloud_run_v2_job.wiki_stream_job.template.0.template.0.service_account}"
+# }

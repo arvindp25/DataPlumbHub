@@ -11,7 +11,7 @@ parser.add_argument("--staging_bucket", required=True)
 
 args = parser.parse_args()
 
-spark = SparkSession.builder.master("yarn").appName("WikiMedia Streaming").config("temporaryGcsBucket", args.staging_bucket).getOrcreate()
+spark = SparkSession.builder.master("yarn").appName("WikiMedia Streaming").config("temporaryGcsBucket", args.staging_bucket).getOrCreate()
 
 sdf = spark.readStream.format("pubsublite")\
     .option("pubsublite.subscription", args.subscription_id).load()

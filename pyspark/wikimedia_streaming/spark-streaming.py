@@ -7,6 +7,7 @@ import argparse
 parser = argparse.ArgumentParser()
 
 parser.add_argument("--subscription_id", required=True)
+parser.add_argument("--staging_bucket", required=True)
 
 args = parser.parse_args()
 

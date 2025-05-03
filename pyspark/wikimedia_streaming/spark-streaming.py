@@ -62,9 +62,12 @@ sdf = spark.readStream \
     .option("maxFilesPerTrigger", 1) \
     .load(args.streaming_bucket)
 
+sdf = sdf.withColumn("datetime" ,f.from_unixtime(f.col('timestamp')))
+sdf= sdf.withColumn("minute", f.date_format(f.col('datetime'), "mm"))
+df_edit_per_minute = sdf.groupBy(["minute"]).agg(f.count(f.col("id")).alias("edit_per_minute"))
 
 
-query = sdf.writeStream.format("console").outputMode("append").trigger(processingTime = "2 second").start()
+query = df_edit_per_minute.writeStream.format("console").outputMode("append").trigger(processingTime = "2 second").start()
 
 query.awaitTermination(120)
 

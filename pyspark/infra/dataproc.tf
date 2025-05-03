@@ -93,7 +93,7 @@ resource "google_dataproc_job" "spark_streaming" {
 
   pyspark_config {
     main_python_file_uri = "gs://${google_storage_bucket.pyspark_files.name}/wikimedia_streaming/${var.commit_hash}/spark-streaming.py"
-    args = ["--streaming_bucket", "${google_storage_bucket.wikimeida_streaming_bucket.name}/stream2025-05-03",
+    args = ["--streaming_bucket", "gs://${google_storage_bucket.wikimeida_streaming_bucket.name}/stream2025-05-03",
             "--staging_bucket", "${google_storage_bucket.pyspark_staging_bucket.name}",
     ]
     properties = {

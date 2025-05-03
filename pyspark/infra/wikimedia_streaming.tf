@@ -53,7 +53,7 @@ resource "google_cloud_run_v2_job" "wikimedia-streaming-app" {
      
     }
        max_retries = 1
-      timeout     = "3600s"
+      timeout     = "120s"
     }
     
     }
@@ -93,25 +93,26 @@ resource "google_pubsub_subscription" "wikimedia-subscription" {
 #   enable_message_ordering    = true
 }
 
-# resource "google_pubsub_subscription" "bigquery_subscription" {
-#   name  = "bigquery_subscription"
-#   topic = google_pubsub_topic.iot_sensor_data.name
-#     dead_letter_policy {
-#     dead_letter_topic = google_pubsub_topic.dlq_topic.id
-#     max_delivery_attempts = 10
-#   }
-#   ack_deadline_seconds = 30
+resource "google_pubsub_subscription" "gcs_subscription" {
+  name  = "wikimedia_streaming_data"
+  topic = google_pubsub_topic.wikimedia_streaming.id
+  cloud_storage_config {
+    bucket = google_storage_bucket.wikimeida_streaming_bucket.name
+    filename_prefix = "stream"
+    filename_datetime_format = "YYYY-MM-DD/hh_mm_ssZ"
+  }
+    dead_letter_policy {
+    dead_letter_topic = google_pubsub_topic.dlq_topic_wiki.id
+    max_delivery_attempts = 10
+  }
+  ack_deadline_seconds = 30
 
-#   bigquery_config {
-#     table = "${google_bigquery_table.iot_sensor_data.project}.${google_bigquery_table.iot_sensor_data.dataset_id}.${google_bigquery_table.iot_sensor_data.table_id}"
-#     use_topic_schema = true
-#   }
 
-#   # depends_on = [google_project_iam_member.viewer, google_project_iam_member.editor]
-# }
+  # depends_on = [google_project_iam_member.viewer, google_project_iam_member.editor]
+}
 
-# resource "google_project_iam_member" "run_job_pubsub_publisher" {
-#   project = var.gcp_project_id
-#   role    = "roles/pubsub.publisher"
-#   member  = "serviceAccount:${google_cloud_run_v2_job.wiki_stream_job.template.0.template.0.service_account}"
-# }
+resource "google_project_iam_member" "run_job_pubsub_publisher" {
+  project = var.gcp_project_id
+  role    = "roles/pubsub.publisher"
+  member  = "serviceAccount:${google_cloud_run_v2_job.wiki_stream_job.template.0.template.0.service_account}"
+}

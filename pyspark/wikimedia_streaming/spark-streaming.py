@@ -6,7 +6,7 @@ import argparse
 
 parser = argparse.ArgumentParser()
 
-parser.add_argument("--subscription_id", required=True)
+parser.add_argument("--streaming_bucket", required=True)
 parser.add_argument("--staging_bucket", required=True)
 
 args = parser.parse_args()
@@ -17,7 +17,13 @@ sdf = spark.readStream.format("pubsub")\
     .option("subscription", args.subscription_id).load()
 
 
-sdf = sdf.withColumn("data", sdf.data.cast(t.StringType()))
+# Read JSON files as they appear (line-delimited JSON per file)
+sdf = spark.readStream \
+    .format("json") \
+    .option("maxFilesPerTrigger", 1) \
+    .load(args.streaming_bucket)
+
+
 
 query = sdf.writeStream.format("console").outputMode("append").trigger(processingTime = "2 second").start()
 

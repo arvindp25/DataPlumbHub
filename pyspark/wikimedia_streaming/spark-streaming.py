@@ -13,8 +13,8 @@ args = parser.parse_args()
 
 spark = SparkSession.builder.master("yarn").appName("WikiMedia Streaming").config("temporaryGcsBucket", args.staging_bucket).getOrCreate()
 
-sdf = spark.readStream.format("pubsublite")\
-    .option("pubsublite.subscription", args.subscription_id).load()
+sdf = spark.readStream.format("pubsub")\
+    .option("subscription", args.subscription_id).load()
 
 
 sdf = sdf.withColumn("data", sdf.data.cast(t.StringType()))

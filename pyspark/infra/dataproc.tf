@@ -101,3 +101,6 @@ resource "google_dataproc_job" "spark_streaming" {
     }
   }
 }
+
+# dataproc_python_file/wikimedia_streaming/3bafd185cdb6a599ac5d40896daedb2617da8e89
+

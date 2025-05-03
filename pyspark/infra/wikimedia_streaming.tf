@@ -98,8 +98,6 @@ resource "google_pubsub_subscription" "gcs_subscription" {
   topic = google_pubsub_topic.wikimedia_streaming.id
   cloud_storage_config {
     bucket = google_storage_bucket.wikimeida_streaming_bucket.name
-    filename_prefix = "stream"
-    filename_datetime_format = "YYYY-MM-DD/hh_mm_ssZ"
   }
     dead_letter_policy {
     dead_letter_topic = google_pubsub_topic.dlq_topic_wiki.id

@@ -53,7 +53,7 @@ resource "google_cloud_run_v2_job" "wikimedia-streaming-app" {
      
     }
        max_retries = 1
-      timeout     = "120s"
+      timeout     = "3000s"
     }
     
     }
@@ -78,7 +78,7 @@ resource "google_pubsub_subscription" "wikimedia-subscription" {
 
 
   # 20 minutes
-  message_retention_duration = "1200s"
+  message_retention_duration = "10s"
   retain_acked_messages      = false
 
   ack_deadline_seconds = 20

@@ -69,6 +69,6 @@ df_edit_per_minute = sdf.groupBy(["minute"]).agg(f.count(f.col("id")).alias("edi
 
 query = df_edit_per_minute.writeStream.format("console").outputMode("update").trigger(processingTime = "2 second").start()
 
-query.awaitTermination(120)
+query.awaitTermination(300)
 
 query.stop()

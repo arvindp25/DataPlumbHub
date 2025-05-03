@@ -64,7 +64,7 @@ sdf = spark.readStream \
 
 sdf = sdf.withColumn("datetime" ,f.from_unixtime(f.col('timestamp')))
 sdf= sdf.withColumn("minute", f.date_format(f.col('datetime'), "mm"))
-df_edit_per_minute = sdf.withWatermark("10 secondss").groupBy(["minute"]).agg(f.count(f.col("id")).alias("edit_per_minute"))
+df_edit_per_minute = sdf.groupBy(["minute"]).agg(f.count(f.col("id")).alias("edit_per_minute"))
 
 
 query = df_edit_per_minute.writeStream.format("console").outputMode("update").trigger(processingTime = "2 second").start()

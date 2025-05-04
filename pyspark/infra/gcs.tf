@@ -51,7 +51,7 @@ resource "google_storage_bucket_object" "copy_sql_ds_file_to_gcs" {
 
 
 resource "google_storage_bucket_iam_member" "wikimeida_streaming_bucket_permission" {
-  depends_on = [  google_storage_bucket.wikimeida_streaming_bucket.name ]
+  depends_on = [  google_storage_bucket.wikimeida_streaming_bucket ]
   bucket = google_storage_bucket.wikimeida_streaming_bucket.name
   role   = "roles/storage.admin"
   member = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-pubsub.iam.gserviceaccount.com"

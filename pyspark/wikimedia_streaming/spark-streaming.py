@@ -64,11 +64,25 @@ sdf = spark.readStream \
 
 sdf = sdf.withColumn("datetime" ,f.from_unixtime(f.col('timestamp')))
 sdf= sdf.withColumn("minute", f.date_format(f.col('datetime'), "mm"))
-df_edit_per_minute = sdf.groupBy(["minute"]).agg(f.count(f.col("id")).alias("edit_per_minute"))
+# edit_per_minute
+df_edit_per_minute = sdf.groupBy(f.window("datetime", "1 minute").alias("window")) \
+.agg(f.count("*").alias("edit_count"))
 
+# rolling avg
+rolling_avg_df = sdf.withWatermark("datetime", "10 minutes") \
+.groupBy(f.window("datetime", "5 minutes", "1 minutes").alias("window")) \
+.agg(f.count("*").alias("rolling_avg_edit_count"))
+# user vs bot vs anon
+sdf = sdf.withColumn("type_of_editor", f.when(f.col("bot") == "true", "Bot")\
+                     .when(f.regexp(f.col('user'),f.lit(r'^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$')), 'Anonymous')\
+                        .otherwise('User'))
 
-query = df_edit_per_minute.writeStream.format("console").outputMode("update").trigger(processingTime = "2 second").start()
+editing_count_df = sdf.groupBy(["type_of_editor"]).agg(f.count("*").alias("count_per_editor"))
 
-query.awaitTermination(300)
+query_1 = df_edit_per_minute.writeStream.format("console").outputMode("update").trigger(processingTime = "2 second").start()
+query_2 =  rolling_avg_df.writeStream.format("console").outputMode("update").trigger(processingTime = "2 second").start()
+query_3 = editing_count_df.writeStream.format("console").outputMode("update").trigger(processingTime = "2 second")
 
-query.stop()
+# query.awaitTermination(300)
+
+# query.stop()

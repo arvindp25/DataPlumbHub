@@ -62,7 +62,8 @@ sdf = spark.readStream \
     .option("maxFilesPerTrigger", 1) \
     .load(args.streaming_bucket)
 
-sdf = sdf.withColumn("datetime" ,f.from_unixtime(f.col('timestamp')))
+sdf = sdf.withColumn("datetime", f.from_unixtime(f.col("timestamp")).cast("timestamp"))
+
 sdf= sdf.withColumn("minute", f.date_format(f.col('datetime'), "mm"))
 # edit_per_minute
 df_edit_per_minute = sdf.groupBy(f.window("datetime", "1 minute").alias("window")) \
@@ -83,6 +84,12 @@ query_1 = df_edit_per_minute.writeStream.format("console").outputMode("update").
 query_2 =  rolling_avg_df.writeStream.format("console").outputMode("update").trigger(processingTime = "2 second").start()
 query_3 = editing_count_df.writeStream.format("console").outputMode("update").trigger(processingTime = "2 second")
 
-# query.awaitTermination(300)
+query_1.awaitTermination(300)
+query_2.awaitTermination(300)
+query_3.awaitTermination(300)
 
-# query.stop()
+
+
+query_1.stop()
+query_2.stop()
+query_3.stop()

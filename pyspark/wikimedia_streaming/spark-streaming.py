@@ -90,8 +90,6 @@ sdf = sdf.withColumn("type_of_editor", f.when(f.col("bot") == "true", "Bot")\
 
 editing_count_df = sdf.withWatermark("datetime", "1 minutes").groupBy(["type_of_editor"]).agg(f.count("*").alias("count_per_editor"))
 
-
-
 query_1 = df_edit_per_minute.writeStream.foreachBatch(lambda df, batch_id: write_to_bq(df,batch_id, args.table_name.get('edit_per_minute')) ).outputMode("append").option("checkpointLocation",f"{args.staging_bucket}/checkpoints") \
     .start()
 

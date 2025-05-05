@@ -85,7 +85,7 @@ resource "google_dataproc_cluster" "pyspark_dataproc_cluster" {
 
 resource "google_dataproc_job" "spark_streaming" {
   region       = google_dataproc_cluster.pyspark_dataproc_cluster.region
-  depends_on = [ google_dataproc_cluster.pyspark_dataproc_cluster ]
+  depends_on = [ google_dataproc_cluster.pyspark_dataproc_cluster,google_bigquery_table.rolling_avg,google_bigquery_table.edit_per_count, google_bigquery_table.editor_type ]
   force_delete = true
   placement {
     cluster_name = google_dataproc_cluster.pyspark_dataproc_cluster.name

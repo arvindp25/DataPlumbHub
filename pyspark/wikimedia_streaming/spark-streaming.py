@@ -85,7 +85,7 @@ rolling_avg_df = sdf.withWatermark("datetime", "10 minutes") \
 .agg(f.count("*").alias("rolling_avg_edit_count"))
 # user vs bot vs anon
 sdf = sdf.withColumn("type_of_editor", f.when(f.col("bot") == "true", "Bot")\
-                     .when(f.rlike(f.col('user'),f.lit(r'^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$')), 'Anonymous')\
+                     .when(f.col('user').rlike(r'^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'), 'Anonymous')\
                         .otherwise('User'))
 
 editing_count_df = sdf.groupBy(["type_of_editor"]).agg(f.count("*").alias("count_per_editor"))

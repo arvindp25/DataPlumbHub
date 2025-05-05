@@ -92,13 +92,13 @@ editing_count_df = sdf.groupBy(["type_of_editor"]).agg(f.count("*").alias("count
 
 
 
-query_1 = df_edit_per_minute.writeStream.foreachBatch(lambda df, batch_id: write_to_bq(df,batch_id, args.table_name.get('edit_per_minute')) ).outputMode("append").option("checkpointLocation",f"{args.bucket_name}/checkpoints") \
+query_1 = df_edit_per_minute.writeStream.foreachBatch(lambda df, batch_id: write_to_bq(df,batch_id, args.table_name.get('edit_per_minute')) ).outputMode("append").option("checkpointLocation",f"{args.staging_bucket}/checkpoints") \
     .start()
 
-query_2 = rolling_avg_df.writeStream.foreachBatch(lambda df, batch_id: write_to_bq(df,batch_id, args.table_name.get('rolling_avg'))).outputMode("append").option("checkpointLocation", f"{args.bucket_name}/checkpoints").start()
+query_2 = rolling_avg_df.writeStream.foreachBatch(lambda df, batch_id: write_to_bq(df,batch_id, args.table_name.get('rolling_avg'))).outputMode("append").option("checkpointLocation", f"{args.staging_bucket}/checkpoints").start()
 
 # query_2 =  rolling_avg_df.writeStream.format("console").outputMode("update").trigger(processingTime = "2 second").start()
-query_3 = editing_count_df.writeStream.foreachBatch(lambda df, batch_id:write_to_bq(df,batch_id, args.table_name.get('editing_count'))).outputMode("append").option("checkpointLocation", f"{args.bucket_name}/checkpoints").start()
+query_3 = editing_count_df.writeStream.foreachBatch(lambda df, batch_id:write_to_bq(df,batch_id, args.table_name.get('editing_count'))).outputMode("append").option("checkpointLocation", f"{args.staging_bucket}/checkpoints").start()
 
 query_1.awaitTermination(300)
 query_2.awaitTermination(300)

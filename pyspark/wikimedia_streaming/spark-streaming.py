@@ -76,19 +76,19 @@ sdf = sdf.withColumn("datetime", f.from_unixtime(f.col("timestamp")).cast("times
 
 sdf= sdf.withColumn("minute", f.date_format(f.col('datetime'), "mm"))
 # edit_per_minute
-df_edit_per_minute = sdf.withWatermark("datetime", "1 minutes").groupBy(f.window("datetime", "1 minute").alias("window")) \
+df_edit_per_minute = sdf.withWatermark("datetime", "1 minute").groupBy(f.window("datetime", "1 minute").alias("window")) \
 .agg(f.count("*").alias("edit_count"))
 
 # rolling avg
 rolling_avg_df = sdf.withWatermark("datetime", "10 minutes") \
-.groupBy(f.window("datetime", "5 minutes", "1 minutes").alias("window")) \
+.groupBy(f.window("datetime", "5 minutes", "1 minute").alias("window")) \
 .agg(f.count("*").alias("rolling_avg_edit_count"))
 # user vs bot vs anon
 sdf = sdf.withColumn("type_of_editor", f.when(f.col("bot") == "true", "Bot")\
                      .when(f.col('user').rlike(r'^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'), 'Anonymous')\
                         .otherwise('User'))
 
-editing_count_df = sdf.withWatermark("datetime", "1 minutes").groupBy(["type_of_editor"]).agg(f.count("*").alias("count_per_editor"))
+editing_count_df = sdf.withWatermark("datetime", "1 minute").groupBy(["type_of_editor"]).agg(f.count("*").alias("count_per_editor"))
 
 query_1 = df_edit_per_minute.writeStream.foreachBatch(lambda df, batch_id: write_to_bq(df,batch_id, args.table_name.get('edit_per_minute')) ).outputMode("append").option("checkpointLocation",f"{args.staging_bucket}/checkpoints") \
     .start()

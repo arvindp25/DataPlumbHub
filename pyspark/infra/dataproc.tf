@@ -95,6 +95,10 @@ resource "google_dataproc_job" "spark_streaming" {
     main_python_file_uri = "gs://${google_storage_bucket.pyspark_files.name}/wikimedia_streaming/${var.commit_hash}/spark-streaming.py"
     args = ["--streaming_bucket", "gs://${google_storage_bucket.wikimeida_streaming_bucket.name}",
             "--staging_bucket", "${google_storage_bucket.pyspark_staging_bucket.name}",
+            "--table_name", jsonencode({"editing_count"="${google_bigquery_table.edit_per_count.project}.${google_bigquery_table.edit_per_count.dataset_id}.${google_bigquery_table.edit_per_count.table_id}"
+            "rolling_avg" = "${google_bigquery_table.rolling_avg.project}.${google_bigquery_table.rolling_avg.dataset_id}.${google_bigquery_table.rolling_avg.table_id}"
+            "editor_type" ="${google_bigquery_table.editor_type.project}.${google_bigquery_table.editor_type.dataset_id}.${google_bigquery_table.editor_type.table_id}"
+            })
     ]
     properties = {
       "spark.logConf" = "true"

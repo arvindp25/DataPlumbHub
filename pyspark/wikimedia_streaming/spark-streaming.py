@@ -4,6 +4,7 @@ import pyspark.sql.types as t
 import os
 import argparse
 from pyspark.sql.types import StructType, StructField, StringType, BooleanType, LongType, TimestampType, MapType
+import json
 
 # Define the schema based on the Wikimedia JSON message
 schema = StructType([
@@ -50,10 +51,19 @@ parser = argparse.ArgumentParser()
 
 parser.add_argument("--streaming_bucket", required=True)
 parser.add_argument("--staging_bucket", required=True)
-
+parser.add_argument("--table_name", required=True, type =json.loads)
 args = parser.parse_args()
 
+
 spark = SparkSession.builder.master("yarn").appName("WikiMedia Streaming").config("temporaryGcsBucket", args.staging_bucket).getOrCreate()
+
+def write_to_bq(df,batch_id, table):
+    df.write \
+    .format("bigquery") \
+    .option("table", table) \
+    .option("writeMethod", "direct") \
+    .mode("append").save()
+
 
 # Read JSON files as they appear (line-delimited JSON per file)
 sdf = spark.readStream \
@@ -80,9 +90,15 @@ sdf = sdf.withColumn("type_of_editor", f.when(f.col("bot") == "true", "Bot")\
 
 editing_count_df = sdf.groupBy(["type_of_editor"]).agg(f.count("*").alias("count_per_editor"))
 
-query_1 = df_edit_per_minute.writeStream.format("console").outputMode("update").trigger(processingTime = "2 second").start()
-query_2 =  rolling_avg_df.writeStream.format("console").outputMode("update").trigger(processingTime = "2 second").start()
-query_3 = editing_count_df.writeStream.format("console").outputMode("update").trigger(processingTime = "2 second")
+
+
+query_1 = df_edit_per_minute.foreachBatch(lambda df, batch_id: write_to_bq(df,batch_id, args.table_name.get('edit_per_minute')) ).outputMode("append").option("checkpointLocation",f"{args.bucket_name}/checkpoints") \
+    .start()
+
+query_2 = rolling_avg_df.foreachBatch(lambda df, batch_id: write_to_bq(df,batch_id, args.table_name.get('rolling_avg'))).outputMode("append").option("checkpointLocation", f"{args.bucket_name}/checkpoints").start()
+
+# query_2 =  rolling_avg_df.writeStream.format("console").outputMode("update").trigger(processingTime = "2 second").start()
+query_3 = editing_count_df.foreachBatch(lambda df, batch_id:write_to_bq(df,batch_id, args.table_name.get('editing_count'))).outputMode("append").option("checkpointLocation", f"{args.bucket_name}/checkpoints").start()
 
 query_1.awaitTermination(300)
 query_2.awaitTermination(300)

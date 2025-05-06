@@ -54,7 +54,7 @@ resource "google_bigquery_table" "editor_type" {
     schema = <<EOF
     [{
     "name" :"type_of_editor",
-    "type" "=" "STRING"
+    "type" ":" "STRING"
     },
     {
       "name":"count_per_editor"

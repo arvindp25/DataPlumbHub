@@ -96,11 +96,11 @@ query_1 = df_edit_per_minute.writeStream.foreachBatch(lambda df, batch_id: write
 query_2 = rolling_avg_df.writeStream.foreachBatch(lambda df, batch_id: write_to_bq(df,batch_id, args.table_name.get('rolling_avg'))).outputMode("append").option("checkpointLocation", f"{args.staging_bucket}/checkpoints/rolling_avg").start()
 
 # query_2 =  rolling_avg_df.writeStream.format("console").outputMode("update").trigger(processingTime = "2 second").start()
-query_3 = editing_count_df.writeStream.foreachBatch(lambda df, batch_id:write_to_bq(df,batch_id, args.table_name.get('editing_count'))).outputMode("append").option("checkpointLocation", f"{args.staging_bucket}/checkpoints/editing_count").start()
+# query_3 = editing_count_df.writeStream.foreachBatch(lambda df, batch_id:write_to_bq(df,batch_id, args.table_name.get('editing_count'))).outputMode("append").option("checkpointLocation", f"{args.staging_bucket}/checkpoints/editing_count").start()
 
 query_1.awaitTermination(300)
 query_2.awaitTermination(300)
-query_3.awaitTermination(300)
+# query_3.awaitTermination(300)
 
 
 

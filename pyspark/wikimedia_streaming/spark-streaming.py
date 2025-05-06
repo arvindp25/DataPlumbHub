@@ -62,6 +62,7 @@ def write_to_bq(df,batch_id, table):
     .format("bigquery") \
     .option("table", table) \
     .option("writeMethod", "direct") \
+    .option("mergeSchema", "true")\
     .mode("append").save()
 
 

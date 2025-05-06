@@ -22,7 +22,7 @@ resource "google_bigquery_table" "edit_per_count" {
     "type" : "RECORD"
     },
     {
-      "name" : "edit_count"
+      "name" : "edit_count",
       "type" : "Integer"
     }
   ]
@@ -40,7 +40,7 @@ resource "google_bigquery_table" "rolling_avg" {
     "type" :"RECORD"
     },
     {
-      "name" :"rolling_avg_edit_count"
+      "name" :"rolling_avg_edit_count",
       "type" :"Integer"
     }
   ]
@@ -57,7 +57,7 @@ resource "google_bigquery_table" "editor_type" {
     "type":"STRING"
     },
     {
-      "name":"count_per_editor"
+      "name":"count_per_editor",
       "type": "Integer"
     }
   ] 

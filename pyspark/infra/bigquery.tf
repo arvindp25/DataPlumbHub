@@ -19,7 +19,17 @@ resource "google_bigquery_table" "edit_per_count" {
   schema =  <<EOF
   [{
     "name" : "window",
-    "type" : "RECORD"
+    "type" : "RECORD",
+    "fields":[
+    {
+    "name":"start",
+    "type": "TIMESTAMP"
+    },
+        {
+    "name":"end",
+    "type": "TIMESTAMP"
+    }
+    ]
     },
     {
       "name" : "edit_count",
@@ -37,7 +47,17 @@ resource "google_bigquery_table" "rolling_avg" {
   schema = <<EOF
    [{
     "name" :"window",
-    "type" :"RECORD"
+    "type" :"RECORD",
+    "fields":[
+    {
+    "name":"start",
+    "type": "TIMESTAMP"
+    },
+        {
+    "name":"end",
+    "type": "TIMESTAMP"
+    }
+    ]
     },
     {
       "name" :"rolling_avg_edit_count",

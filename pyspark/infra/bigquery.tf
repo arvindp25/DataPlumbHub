@@ -18,12 +18,12 @@ resource "google_bigquery_table" "edit_per_count" {
   dataset_id = google_bigquery_dataset.data_transformed.dataset_id
   schema =  <<EOF
   [{
-    name = "window",
-    type = "RECORD"
+    "name" : "window",
+    "type" : "RECORD"
     },
     {
-      name = "edit_count"
-      type = "Integer"
+      "name" : "edit_count"
+      "type" : "Integer"
     }
   ]
   EOF
@@ -36,12 +36,12 @@ resource "google_bigquery_table" "rolling_avg" {
   dataset_id = google_bigquery_dataset.data_transformed.dataset_id
   schema = <<EOF
    [{
-    name = "window",
-    type = "RECORD"
+    "name" :"window",
+    "type" :"RECORD"
     },
     {
-      name = "rolling_avg_edit_count"
-      type = "Integer"
+      "name" :"rolling_avg_edit_count"
+      "type" :"Integer"
     }
   ]
   EOF
@@ -53,12 +53,12 @@ resource "google_bigquery_table" "editor_type" {
   dataset_id = google_bigquery_dataset.data_transformed.dataset_id
     schema = <<EOF
     [{
-    name = "type_of_editor",
-    type = "STRING"
+    "name" :"type_of_editor",
+    "type" "=" "STRING"
     },
     {
-      name = "count_per_editor"
-      type = "Integer"
+      "name":"count_per_editor"
+      "type": "Integer"
     }
   ] 
   EOF

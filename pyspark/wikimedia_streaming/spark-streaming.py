@@ -73,7 +73,7 @@ sdf = spark.readStream \
     .load(args.streaming_bucket)
 
 sdf = sdf.withColumn("datetime", f.from_unixtime(f.col("timestamp")).cast("timestamp"))
-
+sdf = sdf.withWatermark("datetime", "1 minute")
 sdf= sdf.withColumn("minute", f.date_format(f.col('datetime'), "mm"))
 # edit_per_minute
 df_edit_per_minute = sdf.withWatermark("datetime", "1 minute").groupBy(f.window("datetime", "1 minute").alias("window")) \
@@ -88,7 +88,7 @@ sdf = sdf.withColumn("type_of_editor", f.when(f.col("bot") == "true", "Bot")\
                      .when(f.col('user').rlike(r'^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'), 'Anonymous')\
                         .otherwise('User'))
 
-editing_count_df = sdf.withWatermark("datetime", "1 minute").groupBy(["type_of_editor"]).agg(f.count("*").alias("count_per_editor"))
+editing_count_df = sdf.groupBy(["type_of_editor"]).agg(f.count("*").alias("count_per_editor"))
 
 query_1 = df_edit_per_minute.writeStream.foreachBatch(lambda df, batch_id: write_to_bq(df,batch_id, args.table_name.get('edit_per_minute')) ).outputMode("append").option("checkpointLocation",f"{args.staging_bucket}/checkpoints") \
     .start()
@@ -96,14 +96,14 @@ query_1 = df_edit_per_minute.writeStream.foreachBatch(lambda df, batch_id: write
 query_2 = rolling_avg_df.writeStream.foreachBatch(lambda df, batch_id: write_to_bq(df,batch_id, args.table_name.get('rolling_avg'))).outputMode("append").option("checkpointLocation", f"{args.staging_bucket}/checkpoints").start()
 
 # query_2 =  rolling_avg_df.writeStream.format("console").outputMode("update").trigger(processingTime = "2 second").start()
-# query_3 = editing_count_df.writeStream.foreachBatch(lambda df, batch_id:write_to_bq(df,batch_id, args.table_name.get('editing_count'))).outputMode("append").option("checkpointLocation", f"{args.staging_bucket}/checkpoints").start()
+query_3 = editing_count_df.writeStream.foreachBatch(lambda df, batch_id:write_to_bq(df,batch_id, args.table_name.get('editing_count'))).outputMode("append").option("checkpointLocation", f"{args.staging_bucket}/checkpoints").start()
 
 query_1.awaitTermination(300)
 query_2.awaitTermination(300)
-# query_3.awaitTermination(300)
+query_3.awaitTermination(300)
 
 
 
 query_1.stop()
 query_2.stop()
-# query_3.stop()
+query_3.stop()

@@ -16,6 +16,15 @@ resource "google_bigquery_table" "edit_per_count" {
   deletion_protection = false
   table_id   = "wikimedia_edit_per_count"
   dataset_id = google_bigquery_dataset.data_transformed.dataset_id
+  schema = [{
+    name = "window",
+    type = "RECORD"
+    },
+    {
+      name = "edit_count"
+      type = "Integer"
+    }
+  ]
 
 }
 
@@ -23,6 +32,15 @@ resource "google_bigquery_table" "rolling_avg" {
   deletion_protection = false
   table_id   = "wikimedia_rolling_avg"
   dataset_id = google_bigquery_dataset.data_transformed.dataset_id
+  schema = [{
+    name = "window",
+    type = "RECORD"
+    },
+    {
+      name = "rolling_avg_edit_count"
+      type = "Integer"
+    }
+  ]
 
 }
 
@@ -30,5 +48,14 @@ resource "google_bigquery_table" "editor_type" {
   deletion_protection = false
   table_id   = "wikimedia_editor_type"
   dataset_id = google_bigquery_dataset.data_transformed.dataset_id
+    schema = [{
+    name = "type_of_editor",
+    type = "STRING"
+    },
+    {
+      name = "count_per_editor"
+      type = "Integer"
+    }
+  ]
 
 }

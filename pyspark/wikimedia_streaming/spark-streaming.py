@@ -116,7 +116,6 @@ df_edit_per = df_edit_per_minute \
     .format("parquet")  \
     .outputMode("append")  \
     .option("path", f"{args.streaming_bucket}/transformed") \
-    .partitionBy("datetime") \
     .option("checkpointLocation", f"{args.staging_bucket}/checkpoints/editing_count") \
     .start()
 df_edit_per.awaitTermination(300)

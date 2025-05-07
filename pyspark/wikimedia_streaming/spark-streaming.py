@@ -92,30 +92,30 @@ sdf = sdf.withColumn("type_of_editor", f.when(f.col("bot") == "true", "Bot")\
 editing_count_df = sdf.groupBy(["type_of_editor"]).agg(f.count("*").alias("count_per_editor"))
 print(args.table_name)
 
-# query_1 = df_edit_per_minute.writeStream.foreachBatch(lambda df, batch_id: write_to_bq(df,batch_id, args.table_name.get('editing_count')) ).outputMode("append").option("checkpointLocation",f"{args.staging_bucket}/checkpoints/edit_per_minute") \
-#     .start()
+query_1 = df_edit_per_minute.writeStream.foreachBatch(lambda df, batch_id: write_to_bq(df,batch_id, args.table_name.get('editing_count')) ).outputMode("append").option("checkpointLocation",f"{args.staging_bucket}/checkpoints/edit_per_minute") \
+    .start()
 
 # query_2 = rolling_avg_df.writeStream.foreachBatch(lambda df, batch_id: write_to_bq(df,batch_id, args.table_name.get('rolling_avg'))).outputMode("append").option("checkpointLocation", f"{args.staging_bucket}/checkpoints/rolling_avg").start()
 
 # query_2 =  rolling_avg_df.writeStream.format("console").outputMode("update").trigger(processingTime = "2 second").start()
 # query_3 = editing_count_df.writeStream.foreachBatch(lambda df, batch_id:write_to_bq(df,batch_id, args.table_name.get('editing_count'))).outputMode("append").option("checkpointLocation", f"{args.staging_bucket}/checkpoints/editing_count").start()
 
-# query_1.awaitTermination(300)
+query_1.awaitTermination(300)
 # query_2.awaitTermination(300)
 # query_3.awaitTermination(300)
 
 
 
-# query_1.stop()
+query_1.stop()
 # query_2.stop()
 # query_3.stop()
 
 
-df_edit_per = df_edit_per_minute \
-    .writeStream \
-    .format("parquet")  \
-    .outputMode("append")  \
-    .option("path", f"{args.streaming_bucket}/transformed") \
-    .option("checkpointLocation", f"{args.staging_bucket}/checkpoints/editing_count") \
-    .start()
-df_edit_per.awaitTermination(300)
+# df_edit_per = df_edit_per_minute \
+#     .writeStream \
+#     .format("csv")  \
+#     .outputMode("append")  \
+#     .option("path", f"{args.streaming_bucket}/transformed") \
+#     .option("checkpointLocation", f"{args.staging_bucket}/checkpoints/editing_count") \
+#     .start()
+# df_edit_per.awaitTermination(300)

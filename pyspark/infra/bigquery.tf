@@ -48,7 +48,7 @@ resource "google_bigquery_table" "edit_per_count" {
   schema =  <<EOF
   [{
     "name" : "window",
-    "type" : "STRING",
+    "type" : "STRING"
     },
     {
       "name" : "edit_count",

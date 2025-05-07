@@ -80,6 +80,7 @@ sdf= sdf.withColumn("minute", f.date_format(f.col('datetime'), "mm"))
 df_edit_per_minute = sdf.withWatermark("datetime", "1 minute").groupBy(f.window("datetime", "1 minute").alias("window")) \
 .agg(f.count("*").alias("edit_count"))
 df_edit_per_minute = df_edit_per_minute.withColumn("window", f.col("window").cast("string"))
+df_edit_per_minute = df_edit_per_minute.withColumn("edit_count", f.col("edit_count").cast("string"))
 # rolling avg
 rolling_avg_df = sdf.withWatermark("datetime", "10 minutes") \
 .groupBy(f.window("datetime", "5 minutes", "1 minute").alias("window")) \

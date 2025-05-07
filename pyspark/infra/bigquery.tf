@@ -52,7 +52,7 @@ resource "google_bigquery_table" "edit_per_count" {
     },
     {
       "name" : "edit_count",
-      "type" : "INT64"
+      "type" : "STRING"
     }
   ]
   EOF

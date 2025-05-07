@@ -108,4 +108,4 @@ query_2.awaitTermination(300)
 
 query_1.stop()
 query_2.stop()
-query_3.stop()
+# query_3.stop()

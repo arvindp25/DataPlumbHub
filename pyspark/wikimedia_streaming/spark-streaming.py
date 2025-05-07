@@ -79,7 +79,7 @@ sdf= sdf.withColumn("minute", f.date_format(f.col('datetime'), "mm"))
 # edit_per_minute
 df_edit_per_minute = sdf.withWatermark("datetime", "1 minute").groupBy(f.window("datetime", "1 minute").alias("window")) \
 .agg(f.count("*").alias("edit_count"))
-df_edit_per_min = df_edit_per_minute.withColumn("window", f.col("window").cast("string"))
+df_edit_per_minute = df_edit_per_minute.withColumn("window", f.col("window").cast("string"))
 # rolling avg
 rolling_avg_df = sdf.withWatermark("datetime", "10 minutes") \
 .groupBy(f.window("datetime", "5 minutes", "1 minute").alias("window")) \
@@ -91,6 +91,8 @@ sdf = sdf.withColumn("type_of_editor", f.when(f.col("bot") == "true", "Bot")\
 
 editing_count_df = sdf.groupBy(["type_of_editor"]).agg(f.count("*").alias("count_per_editor"))
 print(args.table_name)
+
+print(df_edit_per_minute.printSchema())
 
 query_1 = df_edit_per_minute.writeStream.foreachBatch(lambda df, batch_id: write_to_bq(df,batch_id, args.table_name.get('editing_count')) ).outputMode("append").option("checkpointLocation",f"{args.staging_bucket}/checkpoints/edit_per_minute") \
     .start()

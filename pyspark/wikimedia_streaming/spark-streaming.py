@@ -63,6 +63,7 @@ def write_to_bq(df,batch_id, table):
     .option("table", table) \
     .option("writeMethod", "direct") \
     .option("mergeSchema", "true")\
+    .option("enableModeCheckForSchemaFields", "false")\
     .mode("append").save()
 
 

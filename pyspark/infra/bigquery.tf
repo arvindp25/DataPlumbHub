@@ -33,7 +33,7 @@ resource "google_bigquery_table" "edit_per_count" {
     },
     {
       "name" : "edit_count",
-      "type" : "Integer"
+      "type" : "INT64"
     }
   ]
   EOF
@@ -61,7 +61,7 @@ resource "google_bigquery_table" "rolling_avg" {
     },
     {
       "name" :"rolling_avg_edit_count",
-      "type" :"Integer"
+      "type" :"INT64"
     }
   ]
   EOF
@@ -78,7 +78,7 @@ resource "google_bigquery_table" "editor_type" {
     },
     {
       "name":"count_per_editor",
-      "type": "Integer"
+      "type": "INT64"
     }
   ] 
   EOF
